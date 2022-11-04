@@ -1,6 +1,9 @@
-#include <iostream>
+#include "engine/Simulation.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    Simulation simulation;
+
+    simulation.run();
+
     return 0;
 }
