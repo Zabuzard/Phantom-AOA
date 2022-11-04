@@ -23,11 +23,11 @@ private:
     std::atomic<bool> shouldStop = false;
     std::vector<std::shared_ptr<Entity>> entities;
 
-    void initializeAll();
+    void initializeAll() const;
 
-    void renderAll();
+    void renderAll() const;
 
-    void updateAll(double deltaTimeSeconds);
+    void updateAll(double deltaTimeSeconds) const;
 };
 
 #endif //PHANTOM_AOA_SIMULATION_H

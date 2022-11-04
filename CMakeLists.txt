@@ -4,4 +4,4 @@ project(Phantom_AOA)
 set(CMAKE_CXX_STANDARD 23)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++ -static-libgcc")
 
-add_executable(Phantom_AOA main.cpp engine/Simulation.cpp engine/Simulation.h engine/Entity.h phantom/TestEntity.h)
+add_executable(Phantom_AOA main.cpp engine/Simulation.cpp engine/Simulation.h engine/Entity.h phantom/TestEntity.h engine/Engine.cpp engine/Engine.h math/Vector3.h)

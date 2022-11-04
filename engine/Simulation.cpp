@@ -3,13 +3,20 @@
 #include <iostream>
 #include <thread>
 
+#include "Engine.h"
+
 #include "../phantom/TestEntity.h"
 
 Simulation::Simulation() {
+    auto engine = std::make_shared<Engine>();
+
+    entities.push_back(engine);
     entities.push_back(std::make_shared<TestEntity>());
 }
 
 void Simulation::run() {
+    initializeAll();
+
     // Basic simulation loop with decoupled TPS and FPS
     // TPS is strict and will always be met
     // FPS is variable and takes the remaining time, but is capped
@@ -44,7 +51,7 @@ void Simulation::stop() {
     shouldStop = true;
 }
 
-void Simulation::initializeAll() {
+void Simulation::initializeAll() const {
     for (const auto &entity: entities) {
         entity->initialize();
     }
@@ -52,14 +59,17 @@ void Simulation::initializeAll() {
 
 const std::string ANSI_CLEAR_SCREEN = "\033[2J";
 
-void Simulation::renderAll() {
+void Simulation::renderAll() const {
     std::cout << ANSI_CLEAR_SCREEN;
     for (const auto &entity: entities) {
-        std::cout << entity->render() << '\n';
+        auto renderResult = entity->render();
+        if (!renderResult.empty()) {
+            std::cout << renderResult << '\n';
+        }
     }
 }
 
-void Simulation::updateAll(double deltaTimeSeconds) {
+void Simulation::updateAll(double deltaTimeSeconds) const {
     for (const auto &entity: entities) {
         entity->update(deltaTimeSeconds);
     }
