@@ -22,6 +22,7 @@ private:
     static constexpr double CHANGE_PITCH_PER_SECOND = 0.2;
     static constexpr double CHANGE_RUDDER_PER_SECOND = 0.2;
 
+    // NOTE Values can also be adjusted here manually to play with the system
     Vector3 playerFlightPath{1, 0, 0};
     Vector3 playerChordLine{1, 0, 0};
 

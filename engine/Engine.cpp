@@ -19,6 +19,8 @@ Vector3 Engine::getPlayerChordLine() const {
 }
 
 void Engine::update(double deltaTimeSeconds) {
+    // NOTE Technically this does not actually change the pitch and rudder (as in, degrees or similar),
+    //  just the position in the respective axis. But since this is only needed for testing, no need to get fancy here.
     double changePitchBy = 0;
     if (isKeyPressed(VK_UP)) {
         changePitchBy = CHANGE_PITCH_PER_SECOND;
@@ -41,9 +43,9 @@ void Engine::update(double deltaTimeSeconds) {
 }
 
 bool Engine::isKeyPressed(int keyCode) {
-    // High order bit indicates pressed
     auto keyState = GetKeyState(keyCode);
 
+    // High order bit indicates pressed
     constexpr auto bits = CHAR_BIT * sizeof(SHORT);
     return std::bitset<bits>(keyState)[bits - 1];
 }

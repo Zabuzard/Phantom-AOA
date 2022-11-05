@@ -5,13 +5,13 @@
 
 #include "Engine.h"
 
-#include "../phantom/TestEntity.h"
+#include "../phantom/aoa/AOASensor.h"
 
 Simulation::Simulation() {
     auto engine = std::make_shared<Engine>();
 
     entities.push_back(engine);
-    entities.push_back(std::make_shared<TestEntity>());
+    entities.push_back(std::make_shared<AOASensor>(engine));
 }
 
 void Simulation::run() {
@@ -20,6 +20,8 @@ void Simulation::run() {
     // Basic simulation loop with decoupled TPS and FPS
     // TPS is strict and will always be met
     // FPS is variable and takes the remaining time, but is capped
+    // NOTE Since this is not really scope of the task, no need to get more fancy than this.
+    //  It is enough for manual testing.
     double deltaTimeSeconds = 1.0 / TPS;
     auto lastFrameTime = std::chrono::high_resolution_clock::now();
     double secondsToConsume = 0.0;
