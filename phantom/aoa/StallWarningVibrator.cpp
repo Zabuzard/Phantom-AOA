@@ -2,8 +2,9 @@
 
 namespace phantom {
 StallWarningVibrator::StallWarningVibrator(std::weak_ptr<const AOASensor> sensor,
-                                           std::weak_ptr<const AOAPowerSystem> powerSystem)
-        : sensor{std::move(sensor)}, powerSystem{std::move(powerSystem)} {}
+                                           std::weak_ptr<const AOAPowerSystem> powerSystem,
+                                           std::weak_ptr<const Engine> engine)
+        : sensor{std::move(sensor)}, powerSystem{std::move(powerSystem)}, engine{std::move(engine)} {}
 
 void StallWarningVibrator::initialize() {}
 
@@ -14,9 +15,11 @@ std::string StallWarningVibrator::render() const {
 }
 
 void StallWarningVibrator::update(double deltaTimeSeconds) {
-    // TODO icing, weight on wheel, slats & gear up
+    // TODO icing
     std::optional<double> aoaDeg = sensor.lock()->getAOADeg();
-    if (!aoaDeg || !powerSystem.lock()->hasSecondarySystemPower()) {
+    if (!aoaDeg
+        || !powerSystem.lock()->hasSecondarySystemPower()
+        || hasWeightOnWheel()) {
         vibrating = false;
         return;
     }
@@ -26,5 +29,9 @@ void StallWarningVibrator::update(double deltaTimeSeconds) {
 
 bool StallWarningVibrator::isVibrating() const {
     return vibrating;
+}
+
+bool StallWarningVibrator::hasWeightOnWheel() {
+    return engine.lock()->isFlagActive(Flag::WEIGHT_ON_WHEEL);
 }
 } // phantom

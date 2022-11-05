@@ -7,6 +7,7 @@
 #include <random>
 
 #include "Controls.h"
+#include "Flag.h"
 
 void Engine::initialize() {}
 
@@ -27,17 +28,30 @@ std::string Engine::render() const {
             {CircuitBreaker::RM_VAC_AC_CADC_PWR_3, "CADC PWR 3"}
     };
 
+    std::map<Flag, std::string> flagToName{
+            {Flag::NOSE_WHEEL_EXTENDED, "Nose wheel out"},
+            {Flag::WEIGHT_ON_WHEEL, "Weight on Wheel"}
+    };
+
     std::stringstream ss;
 
     ss << "playerFlightPath: " << playerFlightPath.toString() << '\n';
+
     ss << "powered buses: [";
     for (const auto& bus: poweredBuses) {
         ss << busToName[bus] << ", ";
     }
     ss << "]\n";
+
     ss << "pulled circuit breakers: [";
     for (const auto& circuitBreaker: pulledCircuitBreakers) {
         ss << circuitBreakerToName[circuitBreaker] << ", ";
+    }
+    ss << "]\n";
+
+    ss << "flags: [";
+    for (const auto& flag: activeFlags) {
+        ss << flagToName[flag] << ", ";
     }
     ss << "]\n";
 
@@ -60,10 +74,16 @@ bool Engine::isCircuitBreakerOut(CircuitBreaker circuitBreaker) const {
     return pulledCircuitBreakers.contains(circuitBreaker);
 }
 
+bool Engine::isFlagActive(Flag flag) const {
+    return activeFlags.contains(flag);
+}
+
 void Engine::update(double deltaTimeSeconds) {
     updateAircraftOrientation(deltaTimeSeconds);
+    // TODO Think about merging the maps into just the flags
     updateToggleInputs(pulledCircuitBreakers, keyToCircuitBreaker);
     updateToggleInputs(poweredBuses, keyToBus);
+    updateToggleInputs(activeFlags, keyToFlag);
 }
 
 void Engine::updateAircraftOrientation(double deltaTimeSeconds) {
@@ -118,5 +138,3 @@ double Engine::getOutsideTemperatureCelsius() const {
     // return dist(rng);
     return 30;
 }
-
-

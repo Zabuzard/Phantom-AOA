@@ -11,6 +11,7 @@
 #include "CircuitBreaker.h"
 #include "Bus.h"
 #include "Controls.h"
+#include "Flag.h"
 
 class Engine final : public Entity {
 public:
@@ -32,6 +33,8 @@ public:
 
     [[nodiscard]] double getOutsideTemperatureCelsius() const;
 
+    [[nodiscard]] bool isFlagActive(Flag flag) const;
+
 private:
     static constexpr double CHANGE_PITCH_PER_SECOND = 0.2;
     static constexpr double CHANGE_RUDDER_PER_SECOND = 0.2;
@@ -39,7 +42,7 @@ private:
     const std::map<int32_t, Bus> keyToBus{
             {controls::ESSENTIAL_DC_BUS_POWER,  Bus::ESSENTIAL_DC},
             {controls::RIGHT_MAIN_AC_BUS_POWER, Bus::RIGHT_MAIN_AC},
-            {controls::INSTRUMENT_AC_BUS,       Bus::INSTRUMENT_AC}
+            {controls::INSTRUMENT_AC_BUS_POWER, Bus::INSTRUMENT_AC}
     };
 
     const std::map<int32_t, CircuitBreaker> keyToCircuitBreaker{
@@ -52,12 +55,18 @@ private:
             {controls::RM_VAC_AC_CADC_PWR_3_CB, CircuitBreaker::RM_VAC_AC_CADC_PWR_3}
     };
 
+    const std::map<int32_t, Flag> keyToFlag{
+            {controls::NOSE_WHEEL_FLAG,      Flag::NOSE_WHEEL_EXTENDED},
+            {controls::WEIGHT_ON_WHEEL_FLAG, Flag::WEIGHT_ON_WHEEL}
+    };
+
     // NOTE Values can also be adjusted here manually to play with the system
     Vector3 playerFlightPath{1, 0, 0};
     Vector3 playerChordLine{1, 0, 0};
     std::unordered_set<Bus> poweredBuses{Bus::RIGHT_MAIN_AC, Bus::ESSENTIAL_DC, Bus::INSTRUMENT_AC};
     std::unordered_set<CircuitBreaker> pulledCircuitBreakers;
     std::chrono::high_resolution_clock::time_point lastToggleInput = std::chrono::high_resolution_clock::now();
+    std::unordered_set<Flag> activeFlags;
 
     static bool isKeyPressed(int keyCode);
 

@@ -48,7 +48,7 @@ void AOASensor::updatePhysicalAOA() {
 }
 
 void AOASensor::simulateSensorReading() {
-    // TODO nose wheel changes, side slipping error, frozen error ...
+    // TODO side slipping error, frozen error ...
     bool wasTurnedOff = !isTurnedOn;
 
     if (!powerSystem.lock()->hasPrimarySystemPower()) {
@@ -71,10 +71,14 @@ void AOASensor::simulateSensorReading() {
     }
 
     measuredAOADeg = physicalAOADeg;
+
+    if (!engine.lock()->isFlagActive(Flag::NOSE_WHEEL_EXTENDED)) {
+        measuredAOADeg = *measuredAOADeg - 1;
+    }
 }
 
 void AOASensor::startWarmup() {
-    // NOTE Technically a full warmup would not be needed if just
+    // TODO Technically a full warmup would not be needed if just
     //  switching off and on, it should have some sort of cooldown
     using namespace std::chrono_literals;
 
