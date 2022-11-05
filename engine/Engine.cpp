@@ -19,8 +19,13 @@ std::string Engine::render() const {
     };
 
     std::map<CircuitBreaker, std::string> circuitBreakerToName{
-            {CircuitBreaker::AOA_PROBE_HTR_PWR,  "HTR PWR"},
-            {CircuitBreaker::AOA_PROBE_HTR_CONT, "HTR CONT"}
+            {CircuitBreaker::AOA_PROBE_HTR_PWR,    "HTR PWR"},
+            {CircuitBreaker::AOA_PROBE_HTR_CONT,   "HTR CONT"},
+            {CircuitBreaker::ESS_DC_CADC,          "ESS CADC"},
+            {CircuitBreaker::INSTR_AC_CADC,        "INSTR CADC"},
+            {CircuitBreaker::RM_VAC_AC_CADC_PWR_1, "CADC PWR 1"},
+            {CircuitBreaker::RM_VAC_AC_CADC_PWR_2, "CADC PWR 2"},
+            {CircuitBreaker::RM_VAC_AC_CADC_PWR_3, "CADC PWR 3"}
     };
 
     std::stringstream ss;

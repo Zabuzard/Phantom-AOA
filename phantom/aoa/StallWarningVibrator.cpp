@@ -1,7 +1,9 @@
 #include "StallWarningVibrator.h"
 
 namespace phantom {
-StallWarningVibrator::StallWarningVibrator(std::weak_ptr<const AOASensor> sensor) : sensor{std::move(sensor)} {}
+StallWarningVibrator::StallWarningVibrator(std::weak_ptr<const AOASensor> sensor,
+                                           std::weak_ptr<const AOAPowerSystem> powerSystem)
+        : sensor{std::move(sensor)}, powerSystem{std::move(powerSystem)} {}
 
 void StallWarningVibrator::initialize() {}
 
@@ -12,8 +14,12 @@ std::string StallWarningVibrator::render() const {
 }
 
 void StallWarningVibrator::update(double deltaTimeSeconds) {
-    // TODO Power, circuit breakers, icing, weight on wheel, slats & gear up
-    double aoaDeg = sensor.lock()->getAOADeg();
+    // TODO icing, weight on wheel, slats & gear up
+    std::optional<double> aoaDeg = sensor.lock()->getAOADeg();
+    if (!aoaDeg || !powerSystem.lock()->hasSecondarySystemPower()) {
+        vibrating = false;
+        return;
+    }
 
     vibrating = aoaDeg >= 22.3;
 }

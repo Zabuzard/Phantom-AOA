@@ -5,6 +5,7 @@
 
 #include "../../engine/Entity.h"
 #include "AOASensor.h"
+#include "AOAPowerSystem.h"
 
 namespace phantom {
 enum class Lamp {
@@ -15,7 +16,7 @@ enum class Lamp {
 
 class AOAIndexer final : public Entity {
 public:
-    explicit AOAIndexer(std::weak_ptr<const AOASensor> sensor);
+    explicit AOAIndexer(std::weak_ptr<const AOASensor> sensor, std::weak_ptr<const AOAPowerSystem> powerSystem);
 
     ~AOAIndexer() override = default;
 
@@ -29,6 +30,7 @@ public:
 
 private:
     const std::weak_ptr<const AOASensor> sensor;
+    const std::weak_ptr<const AOAPowerSystem> powerSystem;
 
     std::unordered_set<Lamp> illuminatedLamps;
 };

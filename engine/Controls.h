@@ -16,6 +16,11 @@ constexpr int32_t INSTRUMENT_AC_BUS = 'E';
 
 constexpr int32_t AOA_PROBE_HTR_PWR_CB = 'A';
 constexpr int32_t AOA_PROBE_HTR_CONT_CB = 'S';
+constexpr int32_t ESS_DC_CADC_CB = 'D';
+constexpr int32_t INSTR_AC_CADC_CB = 'F';
+constexpr int32_t RM_VAC_AC_CADC_PWR_1_CB = 'G';
+constexpr int32_t RM_VAC_AC_CADC_PWR_2_CB = 'H';
+constexpr int32_t RM_VAC_AC_CADC_PWR_3_CB = 'J';
 }
 
 #endif //PHANTOM_AOA_CONTROLS_H

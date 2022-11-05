@@ -4,17 +4,27 @@
 #include "../../math/Math.h"
 
 namespace phantom {
-AOASensor::AOASensor(std::weak_ptr<const Engine> engine) : engine{std::move(engine)} {}
+AOASensor::AOASensor(std::weak_ptr<const Engine> engine, std::weak_ptr<const AOAPowerSystem> powerSystem)
+        : engine{std::move(engine)}, powerSystem{std::move(powerSystem)} {}
 
 void AOASensor::initialize() {}
 
-double AOASensor::getAOADeg() const {
+std::optional<double> AOASensor::getAOADeg() const {
     return measuredAOADeg;
 }
 
 std::string AOASensor::render() const {
     std::stringstream ss;
-    ss << "sensor (measured: " << measuredAOADeg << " deg, physical: " << physicalAOADeg << " deg)";
+    ss << "sensor (";
+
+    if (!measuredAOADeg) {
+        ss << "no power";
+    } else {
+        ss << "measured: " << *measuredAOADeg << " deg";
+    }
+
+    ss << ", physical: " << physicalAOADeg << " deg)";
+
     return ss.str();
 }
 
@@ -33,7 +43,12 @@ void AOASensor::updatePhysicalAOA() {
 }
 
 void AOASensor::simulateSensorReading() {
-    // TODO Add bus power, circuit breakers, nose wheel changes, side slipping error, frozen error, warmup, ...
+    // TODO nose wheel changes, side slipping error, frozen error, warmup, ...
+    if (!powerSystem.lock()->hasPrimarySystemPower()) {
+        measuredAOADeg = std::nullopt;
+        return;
+    }
+
     measuredAOADeg = physicalAOADeg;
 }
 } // phantom

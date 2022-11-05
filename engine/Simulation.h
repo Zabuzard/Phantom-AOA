@@ -24,8 +24,6 @@ private:
     std::atomic<bool> shouldStop = false;
     std::vector<std::shared_ptr<Entity>> entities;
 
-    void addPhantom(const std::weak_ptr<const Engine>& engine);
-
     void initializeAll() const;
 
     void renderAll() const;

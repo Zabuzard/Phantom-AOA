@@ -3,11 +3,12 @@
 
 #include "../../engine/Entity.h"
 #include "AOASensor.h"
+#include "AOAPowerSystem.h"
 
 namespace phantom {
 class AOAIndicator final : public Entity {
 public:
-    explicit AOAIndicator(std::weak_ptr<const AOASensor> sensor);
+    explicit AOAIndicator(std::weak_ptr<const AOASensor> sensor, std::weak_ptr<const AOAPowerSystem> powerSystem);
 
     ~AOAIndicator() override = default;
 
@@ -19,8 +20,10 @@ public:
 
 private:
     const std::weak_ptr<const AOASensor> sensor;
+    const std::weak_ptr<const AOAPowerSystem> powerSystem;
 
     double indicatedAOADeg = 0.0;
+    boolean showOffFlag = true;
 };
 } // phantom
 

@@ -3,7 +3,8 @@
 #include <sstream>
 
 namespace phantom {
-AuralToneSystem::AuralToneSystem(std::weak_ptr<const AOASensor> sensor) : sensor{std::move(sensor)} {}
+AuralToneSystem::AuralToneSystem(std::weak_ptr<const AOASensor> sensor, std::weak_ptr<const AOAPowerSystem> powerSystem)
+        : sensor{std::move(sensor)}, powerSystem{std::move(powerSystem)} {}
 
 void AuralToneSystem::initialize() {}
 
@@ -21,8 +22,12 @@ std::string AuralToneSystem::render() const {
 }
 
 void AuralToneSystem::update(double deltaTimeSeconds) {
-    // TODO Power, circuit breakers, icing, volume knob, actual tone profile (also for slats/gear up/down)
-    double aoaDeg = sensor.lock()->getAOADeg();
+    // TODO icing, volume knob, actual tone profile (also for slats/gear up/down)
+    std::optional<double> aoaDeg = sensor.lock()->getAOADeg();
+    if (!aoaDeg || !powerSystem.lock()->hasSecondarySystemPower()) {
+        tone = std::nullopt;
+        return;
+    }
 
     tone = aoaDeg > 20.3 ? std::make_optional<Tone>({1, 1}) : std::nullopt;
 }

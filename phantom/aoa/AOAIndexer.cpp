@@ -3,7 +3,8 @@
 #include <sstream>
 
 namespace phantom {
-AOAIndexer::AOAIndexer(std::weak_ptr<const AOASensor> sensor) : sensor{std::move(sensor)} {}
+AOAIndexer::AOAIndexer(std::weak_ptr<const AOASensor> sensor, std::weak_ptr<const AOAPowerSystem> powerSystem)
+        : sensor{std::move(sensor)}, powerSystem{std::move(powerSystem)} {}
 
 void AOAIndexer::initialize() {}
 
@@ -22,11 +23,14 @@ std::string AOAIndexer::render() const {
 }
 
 void AOAIndexer::update(double deltaTimeSeconds) {
-    // TODO Power, circuit breakers, AGM-45 mode, AN/ASQ-91 self-test mode, light control know (intensity)
-    double aoaDeg = sensor.lock()->getAOADeg();
-
-    // NOTE This is not atomic, but we do not plan to run update and render in parallel
+    // TODO AGM-45 mode, AN/ASQ-91 self-test mode, light control know (intensity)
     illuminatedLamps.clear();
+
+    std::optional<double> aoaDeg = sensor.lock()->getAOADeg();
+    if (!aoaDeg || !powerSystem.lock()->hasSecondarySystemPower()) {
+        return;
+    }
+
     if (aoaDeg > 19.6) {
         illuminatedLamps.emplace(Lamp::LOW_SPEED);
     }

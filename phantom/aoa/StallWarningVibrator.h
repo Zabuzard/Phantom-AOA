@@ -3,11 +3,13 @@
 
 #include "../../engine/Entity.h"
 #include "AOASensor.h"
+#include "AOAPowerSystem.h"
 
 namespace phantom {
 class StallWarningVibrator final : public Entity {
 public:
-    explicit StallWarningVibrator(std::weak_ptr<const AOASensor> sensor);
+    explicit StallWarningVibrator(std::weak_ptr<const AOASensor> sensor,
+                                  std::weak_ptr<const AOAPowerSystem> powerSystem);
 
     ~StallWarningVibrator() override = default;
 
@@ -21,6 +23,7 @@ public:
 
 private:
     const std::weak_ptr<const AOASensor> sensor;
+    const std::weak_ptr<const AOAPowerSystem> powerSystem;
 
     bool vibrating = false;
 };

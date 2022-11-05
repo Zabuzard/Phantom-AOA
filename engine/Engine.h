@@ -41,14 +41,19 @@ private:
     };
 
     const std::map<int32_t, CircuitBreaker> keyToCircuitBreaker{
-            {controls::AOA_PROBE_HTR_PWR_CB,  CircuitBreaker::AOA_PROBE_HTR_PWR},
-            {controls::AOA_PROBE_HTR_CONT_CB, CircuitBreaker::AOA_PROBE_HTR_CONT}
+            {controls::AOA_PROBE_HTR_PWR_CB,    CircuitBreaker::AOA_PROBE_HTR_PWR},
+            {controls::AOA_PROBE_HTR_CONT_CB,   CircuitBreaker::AOA_PROBE_HTR_CONT},
+            {controls::ESS_DC_CADC_CB,          CircuitBreaker::ESS_DC_CADC},
+            {controls::INSTR_AC_CADC_CB,        CircuitBreaker::INSTR_AC_CADC},
+            {controls::RM_VAC_AC_CADC_PWR_1_CB, CircuitBreaker::RM_VAC_AC_CADC_PWR_1},
+            {controls::RM_VAC_AC_CADC_PWR_2_CB, CircuitBreaker::RM_VAC_AC_CADC_PWR_2},
+            {controls::RM_VAC_AC_CADC_PWR_3_CB, CircuitBreaker::RM_VAC_AC_CADC_PWR_3}
     };
 
     // NOTE Values can also be adjusted here manually to play with the system
     Vector3 playerFlightPath{1, 0, 0};
     Vector3 playerChordLine{1, 0, 0};
-    std::unordered_set<Bus> poweredBuses;
+    std::unordered_set<Bus> poweredBuses{Bus::RIGHT_MAIN_AC, Bus::ESSENTIAL_DC, Bus::INSTRUMENT_AC};
     std::unordered_set<CircuitBreaker> pulledCircuitBreakers;
     std::chrono::high_resolution_clock::time_point lastToggleInput = std::chrono::high_resolution_clock::now();
 

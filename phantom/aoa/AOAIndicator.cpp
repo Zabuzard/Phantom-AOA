@@ -3,18 +3,34 @@
 #include <sstream>
 
 namespace phantom {
-AOAIndicator::AOAIndicator(std::weak_ptr<const AOASensor> sensor) : sensor{std::move(sensor)} {}
+AOAIndicator::AOAIndicator(std::weak_ptr<const AOASensor> sensor, std::weak_ptr<const AOAPowerSystem> powerSystem)
+        : sensor{std::move(sensor)}, powerSystem{std::move(powerSystem)} {}
 
 void AOAIndicator::initialize() {}
 
 std::string AOAIndicator::render() const {
     std::stringstream ss;
-    ss << "indicator (indicated: " << indicatedAOADeg << " deg)";
+    ss << "indicator (";
+
+    if (showOffFlag) {
+        ss << "OFF - ";
+    }
+
+    ss << "needle: " << indicatedAOADeg << " deg)";
+
     return ss.str();
 }
 
 void AOAIndicator::update(double deltaTimeSeconds) {
-    // TODO Power, circuit breakers, OFF flag, backlight (white, red, which lamps, intensity), needle damping, needle slew rate (lag)
-    indicatedAOADeg = sensor.lock()->getAOADeg();
+    // TODO backlight (white, red, which lamps, intensity), needle damping, needle slew rate (lag)
+    std::optional<double> aoaDeg = sensor.lock()->getAOADeg();
+    if (!aoaDeg || !powerSystem.lock()->hasPrimarySystemPower()) {
+        // Needle is stuck in previous indication
+        showOffFlag = true;
+        return;
+    }
+
+    indicatedAOADeg = *aoaDeg;
+    showOffFlag = false;
 }
 } // phantom

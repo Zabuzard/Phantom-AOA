@@ -5,6 +5,7 @@
 
 #include "../../engine/Entity.h"
 #include "AOASensor.h"
+#include "AOAPowerSystem.h"
 
 namespace phantom {
 struct Tone final {
@@ -14,7 +15,7 @@ struct Tone final {
 
 class AuralToneSystem final : public Entity {
 public:
-    explicit AuralToneSystem(std::weak_ptr<const AOASensor> sensor);
+    explicit AuralToneSystem(std::weak_ptr<const AOASensor> sensor, std::weak_ptr<const AOAPowerSystem> powerSystem);
 
     ~AuralToneSystem() override = default;
 
@@ -28,6 +29,7 @@ public:
 
 private:
     const std::weak_ptr<const AOASensor> sensor;
+    const std::weak_ptr<const AOAPowerSystem> powerSystem;
 
     std::optional<Tone> tone;
 };

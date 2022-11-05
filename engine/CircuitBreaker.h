@@ -2,8 +2,13 @@
 #define PHANTOM_AOA_CIRCUITBREAKER_H
 
 enum class CircuitBreaker {
-    AOA_PROBE_HTR_PWR, // 3-6C
-    AOA_PROBE_HTR_CONT // 3-7C
+    AOA_PROBE_HTR_PWR, // 3-C6
+    AOA_PROBE_HTR_CONT, // 3-C7
+    ESS_DC_CADC, // 4-K1
+    INSTR_AC_CADC, // 4-K2
+    RM_VAC_AC_CADC_PWR_1, // 4-L3
+    RM_VAC_AC_CADC_PWR_2, // 4-L4
+    RM_VAC_AC_CADC_PWR_3 // 4-L5
 };
 
 #endif //PHANTOM_AOA_CIRCUITBREAKER_H
