@@ -22,7 +22,6 @@ std::string AOAIndexer::render() const {
 }
 
 void AOAIndexer::update(double deltaTimeSeconds) {
-    // TODO Does this get the data from the sensor or the laggy/dampened indicator?
     // TODO Power, circuit breakers, AGM-45 mode, AN/ASQ-91 self-test mode, light control know (intensity)
     double aoaDeg = sensor.lock()->getAOADeg();
 

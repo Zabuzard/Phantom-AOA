@@ -1,0 +1,9 @@
+#ifndef PHANTOM_AOA_CIRCUITBREAKER_H
+#define PHANTOM_AOA_CIRCUITBREAKER_H
+
+enum class CircuitBreaker {
+    AOA_PROBE_HTR_PWR, // 3-6C
+    AOA_PROBE_HTR_CONT // 3-7C
+};
+
+#endif //PHANTOM_AOA_CIRCUITBREAKER_H

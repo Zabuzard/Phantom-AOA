@@ -12,7 +12,6 @@ std::string StallWarningVibrator::render() const {
 }
 
 void StallWarningVibrator::update(double deltaTimeSeconds) {
-    // TODO Does this get the data from the sensor or the laggy/dampened indicator?
     // TODO Power, circuit breakers, icing, weight on wheel, slats & gear up
     double aoaDeg = sensor.lock()->getAOADeg();
 

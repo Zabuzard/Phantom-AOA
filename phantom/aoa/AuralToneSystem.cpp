@@ -21,7 +21,6 @@ std::string AuralToneSystem::render() const {
 }
 
 void AuralToneSystem::update(double deltaTimeSeconds) {
-    // TODO Does this get the data from the sensor or the laggy/dampened indicator?
     // TODO Power, circuit breakers, icing, volume knob, actual tone profile (also for slats/gear up/down)
     double aoaDeg = sensor.lock()->getAOADeg();
 
