@@ -3,9 +3,8 @@
 #include <windows.h>
 #include <bitset>
 #include <map>
-#include <sstream>
-#include <iterator>
 #include <iostream>
+#include <random>
 
 #include "Controls.h"
 
@@ -107,6 +106,17 @@ bool Engine::isToggleInputOnCooldown() {
     auto diff = now - lastToggleInput;
 
     return diff < 200ms;
+}
+
+double Engine::getOutsideTemperatureCelsius() const {
+    std::random_device device;
+    std::mt19937 rng(device());
+
+    std::uniform_real_distribution<double> dist(-30, 30);
+
+    // FIXME Re-enable before release, was just disabled for testing convenience
+    // return dist(rng);
+    return 30;
 }
 
 

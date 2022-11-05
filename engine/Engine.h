@@ -30,6 +30,8 @@ public:
 
     [[nodiscard]] bool isCircuitBreakerOut(CircuitBreaker circuitBreaker) const;
 
+    [[nodiscard]] double getOutsideTemperatureCelsius() const;
+
 private:
     static constexpr double CHANGE_PITCH_PER_SECOND = 0.2;
     static constexpr double CHANGE_RUDDER_PER_SECOND = 0.2;

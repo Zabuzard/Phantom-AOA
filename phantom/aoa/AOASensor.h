@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <optional>
+#include <chrono>
 
 namespace phantom {
 class AOASensor final : public Entity {
@@ -42,10 +43,14 @@ private:
 
     double physicalAOADeg = 0.0;
     std::optional<double> measuredAOADeg;
+    boolean isTurnedOn = false;
+    std::optional<std::chrono::high_resolution_clock::time_point> warmedUpAt;
 
     void updatePhysicalAOA();
 
     void simulateSensorReading();
+
+    void startWarmup();
 };
 } // phantom
 

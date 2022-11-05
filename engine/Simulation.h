@@ -19,7 +19,7 @@ public:
 
 private:
     static const int TPS = 60;
-    static const int FPS = 15;
+    static const int FPS = 10;
 
     std::atomic<bool> shouldStop = false;
     std::vector<std::shared_ptr<Entity>> entities;

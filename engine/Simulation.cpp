@@ -61,7 +61,7 @@ const std::string ANSI_CLEAR_SCREEN = "\033[2J";
 
 void Simulation::renderAll() const {
     std::cout << ANSI_CLEAR_SCREEN
-              << "Best viewed on a ANSI-compatible console. Press CTRL+C to end the simulation.\n"
+              << "Best viewed on a ANSI-compatible console. Interaction only works on Windows. Press CTRL+C to end the simulation.\n"
               << "Press the arrow keys to change the aircraft orientation.\n"
               << "Press QWE to toggle buses, ASDFGHJ to toggle circuit breakers.\n\n";
 
