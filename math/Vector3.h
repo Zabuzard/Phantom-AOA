@@ -16,7 +16,7 @@ struct Vector3 final {
         return ss.str();
     }
 
-    [[nodiscard]] double dot(const Vector3 &other) const {
+    [[nodiscard]] double dot(const Vector3& other) const {
         return x * other.x
                + y * other.y
                + z * other.z;
@@ -28,7 +28,7 @@ struct Vector3 final {
                          + z * z);
     }
 
-    [[nodiscard]] double angleRad(const Vector3 &other) const {
+    [[nodiscard]] double angleRad(const Vector3& other) const {
         return std::acos(dot(other) /
                          (length() * other.length()));
     }

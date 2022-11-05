@@ -7,7 +7,7 @@
 void Engine::initialize() {}
 
 std::string Engine::render() const {
-    return "playerFlightPath: " + playerFlightPath.toString() + " (press arrow keys to move)";
+    return "playerFlightPath: " + playerFlightPath.toString() + '\n';
 }
 
 Vector3 Engine::getPlayerFlightPath() const {
@@ -19,6 +19,7 @@ Vector3 Engine::getPlayerChordLine() const {
 }
 
 void Engine::update(double deltaTimeSeconds) {
+    // TODO If theres time, change this to actually change by degrees of the angle
     // NOTE Technically this does not actually change the pitch and rudder (as in, degrees or similar),
     //  just the position in the respective axis. But since this is only needed for testing, no need to get fancy here.
     double changePitchBy = 0;

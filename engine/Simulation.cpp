@@ -3,15 +3,27 @@
 #include <iostream>
 #include <thread>
 
-#include "Engine.h"
-
 #include "../phantom/aoa/AOASensor.h"
+#include "../phantom/aoa/AOAIndicator.h"
+#include "../phantom/aoa/AOAIndexer.h"
+#include "../phantom/aoa/StallWarningVibrator.h"
+#include "../phantom/aoa/AuralToneSystem.h"
 
 Simulation::Simulation() {
     auto engine = std::make_shared<Engine>();
-
     entities.push_back(engine);
-    entities.push_back(std::make_shared<AOASensor>(engine));
+
+    addPhantom(engine);
+}
+
+void Simulation::addPhantom(const std::weak_ptr<const Engine>& engine) {
+    auto sensor = std::make_shared<phantom::AOASensor>(engine);
+
+    entities.push_back(sensor);
+    entities.push_back(std::make_shared<phantom::AOAIndicator>(sensor));
+    entities.push_back(std::make_shared<phantom::AOAIndexer>(sensor));
+    entities.push_back(std::make_shared<phantom::StallWarningVibrator>(sensor));
+    entities.push_back(std::make_shared<phantom::AuralToneSystem>(sensor));
 }
 
 void Simulation::run() {
@@ -54,7 +66,7 @@ void Simulation::stop() {
 }
 
 void Simulation::initializeAll() const {
-    for (const auto &entity: entities) {
+    for (const auto& entity: entities) {
         entity->initialize();
     }
 }
@@ -62,8 +74,11 @@ void Simulation::initializeAll() const {
 const std::string ANSI_CLEAR_SCREEN = "\033[2J";
 
 void Simulation::renderAll() const {
-    std::cout << ANSI_CLEAR_SCREEN;
-    for (const auto &entity: entities) {
+    std::cout << ANSI_CLEAR_SCREEN
+              << "Best viewed on a ANSI-compatible console. Press CTRL+C to end the simulation.\n"
+              << "Press the arrow keys to change the aircraft orientation.\n\n";
+
+    for (const auto& entity: entities) {
         auto renderResult = entity->render();
         if (!renderResult.empty()) {
             std::cout << renderResult << '\n';
@@ -72,7 +87,7 @@ void Simulation::renderAll() const {
 }
 
 void Simulation::updateAll(double deltaTimeSeconds) const {
-    for (const auto &entity: entities) {
+    for (const auto& entity: entities) {
         entity->update(deltaTimeSeconds);
     }
 }

@@ -10,9 +10,9 @@ public:
 
     virtual void initialize() = 0;
 
-    virtual void update(double deltaTimeSeconds) = 0;
-
     [[nodiscard]] virtual std::string render() const = 0;
+
+    virtual void update(double deltaTimeSeconds) = 0;
 };
 
 #endif //PHANTOM_AOA_ENTITY_H

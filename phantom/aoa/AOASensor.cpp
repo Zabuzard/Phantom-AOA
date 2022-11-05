@@ -3,7 +3,8 @@
 #include <sstream>
 #include "../../math/Math.h"
 
-AOASensor::AOASensor(std::weak_ptr<const Engine> engine) : engine(std::move(engine)) {}
+namespace phantom {
+AOASensor::AOASensor(std::weak_ptr<const Engine> engine) : engine{std::move(engine)} {}
 
 void AOASensor::initialize() {}
 
@@ -32,5 +33,7 @@ void AOASensor::updatePhysicalAOA() {
 }
 
 void AOASensor::simulateSensorReading() {
+    // TODO Add bus power, circuit breakers, nose wheel changes, side slipping error, frozen error, warmup, ...
     measuredAOADeg = physicalAOADeg;
 }
+} // phantom

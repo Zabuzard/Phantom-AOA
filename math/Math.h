@@ -4,9 +4,9 @@
 #include <numbers>
 
 namespace math {
-    double radToDeg(double radians) {
-        return radians * (180.0 / std::numbers::pi);
-    }
+double radToDeg(double radians) {
+    return radians * (180.0 / std::numbers::pi);
+}
 } // math
 
 #endif //PHANTOM_AOA_MATH_H
