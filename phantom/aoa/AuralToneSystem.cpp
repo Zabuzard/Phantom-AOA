@@ -48,7 +48,7 @@ std::string AuralToneSystem::render() const {
 }
 
 void AuralToneSystem::update(double deltaTimeSeconds) {
-    // TODO icing, volume knob
+    // TODO icing
     std::optional<double> aoaDeg = sensor.lock()->getAOADeg();
     if (!aoaDeg || !powerSystem.lock()->hasSecondarySystemPower()) {
         tones.clear();
@@ -97,8 +97,8 @@ std::vector<Tone> AuralToneSystem::getTonesForFlightProfile(double aoaDeg, doubl
     }
 
     if (aoaDeg >= 25) {
-        // Ensure volume knob can not mute the sound
-        volume = std::max(volume, 2.0);
+        // Ensure volume knob can not mute the sound anymore
+        volume = std::max(volume, 0.3);
     }
 
     std::vector<Tone> tones;
@@ -121,7 +121,6 @@ std::vector<Tone> AuralToneSystem::getTonesForFlightProfile(double aoaDeg, doubl
 }
 
 double AuralToneSystem::getVolume() const {
-    // TODO Actually check the volume knob instead
-    return 1;
+    return engine.lock()->getKnobValue(Knob::AURAL_TONE_VOLUME);
 }
 } // phantom

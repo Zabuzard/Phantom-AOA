@@ -89,13 +89,15 @@ private:
     const std::map<int32_t, Knob> keyToKnobDecrease{
             {controls::INSTR_PANEL_LIGHT_DECR_KNOB, Knob::INSTR_PANEL_LIGHT_INTENSITY},
             {controls::EMERGENCY_FLOODLIGHT_DECR_KNOB, Knob::EMERGENCY_FLOODLIGHT_INTENSITY},
-            {controls::INDEXER_LIGHT_DECR_KNOB, Knob::INDEXER_LIGHT_INTENSITY}
+            {controls::INDEXER_LIGHT_DECR_KNOB, Knob::INDEXER_LIGHT_INTENSITY},
+            {controls::AURAL_TONE_VOLUME_DECR_KNOB, Knob::AURAL_TONE_VOLUME}
     };
 
     const std::map<int32_t, Knob> keyToKnobIncrease{
             {controls::INSTR_PANEL_LIGHT_INCR_KNOB, Knob::INSTR_PANEL_LIGHT_INTENSITY},
             {controls::EMERGENCY_FLOODLIGHT_INCR_KNOB, Knob::EMERGENCY_FLOODLIGHT_INTENSITY},
-            {controls::INDEXER_LIGHT_INCR_KNOB, Knob::INDEXER_LIGHT_INTENSITY}
+            {controls::INDEXER_LIGHT_INCR_KNOB, Knob::INDEXER_LIGHT_INTENSITY},
+            {controls::AURAL_TONE_VOLUME_INCR_KNOB, Knob::AURAL_TONE_VOLUME}
     };
 
     // NOTE Values can also be adjusted here manually to play with the system
@@ -108,8 +110,10 @@ private:
     std::chrono::high_resolution_clock::time_point lastToggleInput = std::chrono::high_resolution_clock::now();
     std::unordered_set<Flag> activeFlags;
     std::map<Knob, double> knobToValue{
-            {Knob::INSTR_PANEL_LIGHT_INTENSITY,    0},
-            {Knob::EMERGENCY_FLOODLIGHT_INTENSITY, 0}
+            {Knob::INSTR_PANEL_LIGHT_INTENSITY,    1},
+            {Knob::EMERGENCY_FLOODLIGHT_INTENSITY, 0},
+            {Knob::INDEXER_LIGHT_INTENSITY,        1},
+            {Knob::AURAL_TONE_VOLUME,              1}
     };
 
     static bool isKeyPressed(int keyCode);

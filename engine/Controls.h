@@ -34,6 +34,8 @@ constexpr int32_t EMERGENCY_FLOODLIGHT_DECR_KNOB = 'U';
 constexpr int32_t EMERGENCY_FLOODLIGHT_INCR_KNOB = 'I';
 constexpr int32_t INDEXER_LIGHT_DECR_KNOB = 'O';
 constexpr int32_t INDEXER_LIGHT_INCR_KNOB = 'P';
+constexpr int32_t AURAL_TONE_VOLUME_DECR_KNOB = 'K';
+constexpr int32_t AURAL_TONE_VOLUME_INCR_KNOB = 'L';
 }
 
 #endif //PHANTOM_AOA_CONTROLS_H
