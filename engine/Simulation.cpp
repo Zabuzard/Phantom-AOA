@@ -63,8 +63,9 @@ void Simulation::renderAll() const {
     std::cout << ANSI_CLEAR_SCREEN
               << "Best viewed on a ANSI-compatible console. Interaction only works on Windows. Press CTRL+C to end the simulation.\n"
               << "Press the arrow keys to change the aircraft orientation.\n"
-              << "Press QWE to toggle buses, ASDFGHJ to toggle circuit breakers.\n"
-              << "Further: Y - Nose wheel, X - Weight on Wheel, C - Gear, V - Slats.\n\n";
+              << "Press QWE to toggle buses, ASDFGHJ for circuit breakers.\n"
+              << "Rotate knobs: Instr lights (TZ), Emr flood (UI)\n"
+              << "Further: Nose wheel (Y), Weight on Wheel (X), Gear (C), Slats (V)\n\n";
 
     for (const auto& entity: entities) {
         auto renderResult = entity->render();

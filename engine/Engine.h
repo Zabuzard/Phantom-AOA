@@ -12,6 +12,7 @@
 #include "Bus.h"
 #include "Controls.h"
 #include "Flag.h"
+#include "Knob.h"
 
 class Engine final : public Entity {
 public:
@@ -54,9 +55,12 @@ public:
 
     [[nodiscard]] bool isFlagActive(Flag flag) const;
 
+    [[nodiscard]] double getKnobValue(Knob knob) const;
+
 private:
     static constexpr double CHANGE_PITCH_DEG_PER_SECOND = 5;
     static constexpr double CHANGE_YAW_DEG_PER_SECOND = 5;
+    static constexpr double CHANGE_KNOB_VALUE_PER_SECOND = 0.2;
 
     const std::map<int32_t, Bus> keyToBus{
             {controls::ESSENTIAL_DC_BUS_POWER,  Bus::ESSENTIAL_DC},
@@ -81,6 +85,16 @@ private:
             {controls::SLATS_FLAG,           Flag::SLATS_IN}
     };
 
+    const std::map<int32_t, Knob> keyToKnobDecrease{
+            {controls::INSTR_PANEL_LIGHT_DECR_KNOB, Knob::INSTR_PANEL_LIGHT_INTENSITY},
+            {controls::EMERGENCY_FLOODLIGHT_DECR_KNOB, Knob::EMERGENCY_FLOODLIGHT_INTENSITY}
+    };
+
+    const std::map<int32_t, Knob> keyToKnobIncrease{
+            {controls::INSTR_PANEL_LIGHT_INCR_KNOB, Knob::INSTR_PANEL_LIGHT_INTENSITY},
+            {controls::EMERGENCY_FLOODLIGHT_INCR_KNOB, Knob::EMERGENCY_FLOODLIGHT_INTENSITY}
+    };
+
     // NOTE Values can also be adjusted here manually to play with the system
     Vector3 playerFlightPath{10, 0, 0};
     Vector3 playerRollAxis{10, 0, 0};
@@ -90,6 +104,10 @@ private:
     std::unordered_set<CircuitBreaker> pulledCircuitBreakers;
     std::chrono::high_resolution_clock::time_point lastToggleInput = std::chrono::high_resolution_clock::now();
     std::unordered_set<Flag> activeFlags;
+    std::map<Knob, double> knobToValue{
+            {Knob::INSTR_PANEL_LIGHT_INTENSITY, 0},
+            {Knob::EMERGENCY_FLOODLIGHT_INTENSITY, 0}
+    };
 
     static bool isKeyPressed(int keyCode);
 
@@ -116,6 +134,8 @@ private:
             lastToggleInput = std::chrono::high_resolution_clock::now();
         }
     }
+
+    void updateKnobValues(double deltaTimeSeconds);
 
     void updateAircraftOrientation(double deltaTimeSeconds);
 

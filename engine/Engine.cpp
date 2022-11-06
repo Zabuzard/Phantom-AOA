@@ -37,7 +37,13 @@ std::string Engine::render() const {
             {Flag::SLATS_IN,            "Slats in"}
     };
 
+    std::map<Knob, std::string> knobToName{
+            {Knob::INSTR_PANEL_LIGHT_INTENSITY,    "INSTR Light"},
+            {Knob::EMERGENCY_FLOODLIGHT_INTENSITY, "EMR Flood"}
+    };
+
     std::stringstream ss;
+    ss << "## Engine\n";
 
     ss << "playerFlightPath: " << playerFlightPath.toString() << '\n';
     ss << "forward: " << playerRollAxis.toString()
@@ -53,6 +59,12 @@ std::string Engine::render() const {
     ss << "pulled circuit breakers: [";
     for (const auto& circuitBreaker: pulledCircuitBreakers) {
         ss << circuitBreakerToName[circuitBreaker] << ", ";
+    }
+    ss << "]\n";
+
+    ss << "knob values: [";
+    for (const auto& [knob, value]: knobToValue) {
+        ss << knobToName[knob] << "=" << value << ", ";
     }
     ss << "]\n";
 
@@ -95,10 +107,10 @@ bool Engine::isFlagActive(Flag flag) const {
 
 void Engine::update(double deltaTimeSeconds) {
     updateAircraftOrientation(deltaTimeSeconds);
-    // TODO Think about merging the maps into just the flags
     updateToggleInputs(pulledCircuitBreakers, keyToCircuitBreaker);
     updateToggleInputs(poweredBuses, keyToBus);
     updateToggleInputs(activeFlags, keyToFlag);
+    updateKnobValues(deltaTimeSeconds);
 }
 
 void Engine::updateAircraftOrientation(double deltaTimeSeconds) {
@@ -153,4 +165,33 @@ double Engine::getOutsideTemperatureCelsius() const {
     // FIXME Re-enable before release, was just disabled for testing convenience
     // return dist(rng);
     return 30;
+}
+
+double Engine::getKnobValue(Knob knob) const {
+    const auto it = knobToValue.find(knob);
+    return it == knobToValue.cend() ? 0 : it->second;
+}
+
+void Engine::updateKnobValues(double deltaTimeSeconds) {
+    double changeValueBy = CHANGE_KNOB_VALUE_PER_SECOND * deltaTimeSeconds;
+
+    for (const auto& [key, knob]: keyToKnobDecrease) {
+        if (!isKeyPressed(key)) {
+            continue;
+        }
+
+        double value = getKnobValue(knob);
+        value = math::clamp(value - changeValueBy, 0, 1);
+        knobToValue[knob] = value;
+    }
+
+    for (const auto& [key, knob]: keyToKnobIncrease) {
+        if (!isKeyPressed(key)) {
+            continue;
+        }
+
+        double value = getKnobValue(knob);
+        value = math::clamp(value + changeValueBy, 0, 1);
+        knobToValue[knob] = value;
+    }
 }

@@ -8,11 +8,14 @@
 #include "AOAPowerSystem.h"
 
 namespace phantom {
+
+namespace indexer {
 enum class Lamp {
     LOW_SPEED,
     ON_SPEED,
     HIGH_SPEED
 };
+} // indexer
 
 class AOAIndexer final : public Entity {
 public:
@@ -26,13 +29,13 @@ public:
 
     void update(double deltaTimeSeconds) override;
 
-    [[nodiscard]] std::unordered_set<Lamp> getIlluminatedLamps() const;
+    [[nodiscard]] std::unordered_set<indexer::Lamp> getIlluminatedLamps() const;
 
 private:
     const std::weak_ptr<const AOASensor> sensor;
     const std::weak_ptr<const AOAPowerSystem> powerSystem;
 
-    std::unordered_set<Lamp> illuminatedLamps;
+    std::unordered_set<indexer::Lamp> illuminatedLamps;
 };
 } // phantom
 

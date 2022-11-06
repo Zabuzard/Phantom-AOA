@@ -67,7 +67,7 @@ void AOASensor::updatePhysicalSideSlip() {
 }
 
 void AOASensor::simulateSensorReading() {
-    // TODO frozen error, spin error ...
+    // TODO frozen error, spin/stall error
     bool wasTurnedOff = !isTurnedOn;
 
     if (!powerSystem.lock()->hasPrimarySystemPower()) {

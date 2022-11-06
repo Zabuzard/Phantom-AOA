@@ -2,13 +2,38 @@
 #define PHANTOM_AOA_AOAINDICATOR_H
 
 #include "../../engine/Entity.h"
+#include "../../engine/Engine.h"
 #include "AOASensor.h"
 #include "AOAPowerSystem.h"
 
+#include <optional>
+#include <map>
+
 namespace phantom {
+
+namespace indicator {
+enum class LampColor {
+    WHITE,
+    RED
+};
+
+enum class LampType {
+    LOW,
+    MEDIUM,
+    HIGH
+};
+
+struct Lamp final {
+    LampType type;
+    double intensity;
+    LampColor color;
+};
+} // indicator
+
 class AOAIndicator final : public Entity {
 public:
-    explicit AOAIndicator(std::weak_ptr<const AOASensor> sensor, std::weak_ptr<const AOAPowerSystem> powerSystem);
+    explicit AOAIndicator(std::weak_ptr<const AOASensor> sensor, std::weak_ptr<const AOAPowerSystem> powerSystem,
+                          std::weak_ptr<const Engine> engine);
 
     ~AOAIndicator() override = default;
 
@@ -18,18 +43,44 @@ public:
 
     void update(double deltaTimeSeconds) override;
 
+    [[nodiscard]] std::optional<indicator::Lamp> getIlluminatedLamp() const;
+
 private:
     static constexpr double SMALL_DIFF_NEEDLE_SPEED_DEG_PER_SECOND = 4.5 / 1.0;
     static constexpr double GREAT_DIFF_NEEDLE_SPEED_DEG_PER_SECOND = 20.0 / 3.0;
 
     const std::weak_ptr<const AOASensor> sensor;
     const std::weak_ptr<const AOAPowerSystem> powerSystem;
+    const std::weak_ptr<const Engine> engine;
+
+    // TODO Move into helper class, also use them for indexer
+    const std::string ANSI_BLACK = "\u001B[30m";
+    const std::string ANSI_WHITE = "\u001B[37m";
+    const std::string ANSI_WHITE_BACKGROUND = "\u001B[47m";
+    const std::string ANSI_RED_BACKGROUND = "\u001B[41m";
+    const std::string ANSI_COLOR_RESET = "\u001B[0m";
 
     double indicatedAOADeg = 0.0;
     boolean showOffFlag = true;
     boolean hasNeedleCaughtUp = true;
+    std::optional<indicator::Lamp> illuminatedLamp;
+
+    std::map<indicator::LampType, std::string> lampTypeToName{
+            {indicator::LampType::LOW,    "low"},
+            {indicator::LampType::MEDIUM, "med"},
+            {indicator::LampType::HIGH,   "high"}
+    };
+
+    std::map<indicator::LampColor, std::string> lampColorToName{
+            {indicator::LampColor::WHITE, ANSI_WHITE_BACKGROUND + ANSI_BLACK + "white" + ANSI_COLOR_RESET},
+            {indicator::LampColor::RED,   ANSI_RED_BACKGROUND + ANSI_WHITE + "red" + ANSI_COLOR_RESET}
+    };
+
+    void updateIndication(double deltaTimeSeconds);
 
     void simulateNeedleLag(double aoaDeg, double deltaTimeSeconds);
+
+    void updateLamp();
 };
 } // phantom
 

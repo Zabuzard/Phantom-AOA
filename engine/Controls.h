@@ -26,6 +26,11 @@ constexpr int32_t NOSE_WHEEL_FLAG = 'Y';
 constexpr int32_t WEIGHT_ON_WHEEL_FLAG = 'X';
 constexpr int32_t GEAR_FLAG = 'C';
 constexpr int32_t SLATS_FLAG = 'V';
+
+constexpr int32_t INSTR_PANEL_LIGHT_DECR_KNOB = 'T';
+constexpr int32_t INSTR_PANEL_LIGHT_INCR_KNOB = 'Z';
+constexpr int32_t EMERGENCY_FLOODLIGHT_DECR_KNOB = 'U';
+constexpr int32_t EMERGENCY_FLOODLIGHT_INCR_KNOB = 'I';
 }
 
 #endif //PHANTOM_AOA_CONTROLS_H

@@ -15,15 +15,15 @@ std::string AOAIndexer::render() const {
 
     std::stringstream ss;
     ss << "indexer ("
-       << (illuminatedLamps.contains(Lamp::LOW_SPEED) ? ">" : " ")
-       << (illuminatedLamps.contains(Lamp::ON_SPEED) ? "o" : " ")
-       << (illuminatedLamps.contains(Lamp::HIGH_SPEED) ? "<" : " ")
+       << (illuminatedLamps.contains(indexer::Lamp::LOW_SPEED) ? ">" : " ")
+       << (illuminatedLamps.contains(indexer::Lamp::ON_SPEED) ? "o" : " ")
+       << (illuminatedLamps.contains(indexer::Lamp::HIGH_SPEED) ? "<" : " ")
        << ")";
     return ss.str();
 }
 
 void AOAIndexer::update(double deltaTimeSeconds) {
-    // TODO AGM-45 mode, AN/ASQ-91 self-test mode, light control know (intensity)
+    // TODO AGM-45 mode, AN/ASQ-91 self-test mode, light control knob (intensity)
     illuminatedLamps.clear();
 
     std::optional<double> aoaDeg = sensor.lock()->getAOADeg();
@@ -32,17 +32,17 @@ void AOAIndexer::update(double deltaTimeSeconds) {
     }
 
     if (aoaDeg > 19.6) {
-        illuminatedLamps.emplace(Lamp::LOW_SPEED);
+        illuminatedLamps.emplace(indexer::Lamp::LOW_SPEED);
     }
     if (aoaDeg > 18 && aoaDeg < 20.3) {
-        illuminatedLamps.emplace(Lamp::ON_SPEED);
+        illuminatedLamps.emplace(indexer::Lamp::ON_SPEED);
     }
     if (aoaDeg < 18.7) {
-        illuminatedLamps.emplace(Lamp::HIGH_SPEED);
+        illuminatedLamps.emplace(indexer::Lamp::HIGH_SPEED);
     }
 }
 
-std::unordered_set<Lamp> AOAIndexer::getIlluminatedLamps() const {
+std::unordered_set<indexer::Lamp> AOAIndexer::getIlluminatedLamps() const {
     return illuminatedLamps;
 }
 } // phantom
