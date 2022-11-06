@@ -14,6 +14,12 @@
 #include "Flag.h"
 #include "Knob.h"
 
+enum class Agm45Cue {
+    DIVE,
+    LEVEL,
+    PULL_UP
+};
+
 class Engine final : public Entity {
 public:
     ~Engine() override = default;
@@ -57,6 +63,8 @@ public:
 
     [[nodiscard]] double getKnobValue(Knob knob) const;
 
+    [[nodiscard]] Agm45Cue getAgm45Cue() const;
+
 private:
     static constexpr double CHANGE_PITCH_DEG_PER_SECOND = 5;
     static constexpr double CHANGE_YAW_DEG_PER_SECOND = 5;
@@ -80,24 +88,25 @@ private:
     };
 
     const std::map<int32_t, Flag> keyToFlag{
-            {controls::NOSE_WHEEL_FLAG, Flag::NOSE_WHEEL_EXTENDED},
+            {controls::NOSE_WHEEL_FLAG,      Flag::NOSE_WHEEL_EXTENDED},
             {controls::WEIGHT_ON_WHEEL_FLAG, Flag::WEIGHT_ON_WHEEL},
-            {controls::GEAR_FLAG, Flag::GEAR_EXTENDED},
-            {controls::SLATS_FLAG, Flag::SLATS_IN}
+            {controls::GEAR_FLAG,            Flag::GEAR_EXTENDED},
+            {controls::SLATS_FLAG,           Flag::SLATS_IN},
+            {controls::AGM_45_SELECTED_FLAG, Flag::AGM_45_SELECTED}
     };
 
     const std::map<int32_t, Knob> keyToKnobDecrease{
-            {controls::INSTR_PANEL_LIGHT_DECR_KNOB, Knob::INSTR_PANEL_LIGHT_INTENSITY},
+            {controls::INSTR_PANEL_LIGHT_DECR_KNOB,    Knob::INSTR_PANEL_LIGHT_INTENSITY},
             {controls::EMERGENCY_FLOODLIGHT_DECR_KNOB, Knob::EMERGENCY_FLOODLIGHT_INTENSITY},
-            {controls::INDEXER_LIGHT_DECR_KNOB, Knob::INDEXER_LIGHT_INTENSITY},
-            {controls::AURAL_TONE_VOLUME_DECR_KNOB, Knob::AURAL_TONE_VOLUME}
+            {controls::INDEXER_LIGHT_DECR_KNOB,        Knob::INDEXER_LIGHT_INTENSITY},
+            {controls::AURAL_TONE_VOLUME_DECR_KNOB,    Knob::AURAL_TONE_VOLUME}
     };
 
     const std::map<int32_t, Knob> keyToKnobIncrease{
-            {controls::INSTR_PANEL_LIGHT_INCR_KNOB, Knob::INSTR_PANEL_LIGHT_INTENSITY},
+            {controls::INSTR_PANEL_LIGHT_INCR_KNOB,    Knob::INSTR_PANEL_LIGHT_INTENSITY},
             {controls::EMERGENCY_FLOODLIGHT_INCR_KNOB, Knob::EMERGENCY_FLOODLIGHT_INTENSITY},
-            {controls::INDEXER_LIGHT_INCR_KNOB, Knob::INDEXER_LIGHT_INTENSITY},
-            {controls::AURAL_TONE_VOLUME_INCR_KNOB, Knob::AURAL_TONE_VOLUME}
+            {controls::INDEXER_LIGHT_INCR_KNOB,        Knob::INDEXER_LIGHT_INTENSITY},
+            {controls::AURAL_TONE_VOLUME_INCR_KNOB,    Knob::AURAL_TONE_VOLUME}
     };
 
     // NOTE Values can also be adjusted here manually to play with the system

@@ -18,7 +18,6 @@ std::string StallWarningVibrator::render() const {
 }
 
 void StallWarningVibrator::update(double deltaTimeSeconds) {
-    // TODO icing
     std::optional<double> aoaDeg = sensor.lock()->getAOADeg();
     if (!aoaDeg
         || !powerSystem.lock()->hasSecondarySystemPower()

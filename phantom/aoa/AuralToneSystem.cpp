@@ -48,7 +48,6 @@ std::string AuralToneSystem::render() const {
 }
 
 void AuralToneSystem::update(double deltaTimeSeconds) {
-    // TODO icing
     std::optional<double> aoaDeg = sensor.lock()->getAOADeg();
     if (!aoaDeg || !powerSystem.lock()->hasSecondarySystemPower()) {
         tones.clear();

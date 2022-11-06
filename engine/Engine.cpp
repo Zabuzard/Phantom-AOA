@@ -35,7 +35,8 @@ std::string Engine::render() const {
             {Flag::NOSE_WHEEL_EXTENDED, "Nose wheel out"},
             {Flag::WEIGHT_ON_WHEEL,     "Weight on Wheel"},
             {Flag::GEAR_EXTENDED,       "Gear out"},
-            {Flag::SLATS_IN,            "Slats in"}
+            {Flag::SLATS_IN,            "Slats in"},
+            {Flag::AGM_45_SELECTED,     "AGM-45 selected"}
     };
 
     std::map<Knob, std::string> knobToName{
@@ -197,4 +198,15 @@ void Engine::updateKnobValues(double deltaTimeSeconds) {
         value = math::clamp(value + changeValueBy, 0, 1);
         knobToValue[knob] = value;
     }
+}
+
+Agm45Cue Engine::getAgm45Cue() const {
+    std::vector<Agm45Cue> allCues{Agm45Cue::DIVE, Agm45Cue::LEVEL, Agm45Cue::PULL_UP};
+
+    std::random_device device;
+    std::mt19937 rng(device());
+
+    std::uniform_int_distribution<size_t> dist(0, allCues.size() - 1);
+
+    return allCues[dist(rng)];
 }

@@ -42,6 +42,8 @@ private:
 
     void updateLamps(double aoaDeg);
 
+    void updateLampsAgmCue();
+
     void updateLightIntensity();
 };
 } // phantom

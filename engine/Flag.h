@@ -5,7 +5,8 @@ enum class Flag {
     NOSE_WHEEL_EXTENDED,
     WEIGHT_ON_WHEEL,
     GEAR_EXTENDED,
-    SLATS_IN
+    SLATS_IN,
+    AGM_45_SELECTED
 };
 
 #endif //PHANTOM_AOA_FLAG_H

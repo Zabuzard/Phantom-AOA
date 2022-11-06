@@ -29,7 +29,6 @@ std::string AOAIndexer::render() const {
 }
 
 void AOAIndexer::update(double deltaTimeSeconds) {
-    // TODO AGM-45 mode, AN/ASQ-91 self-test mode, light control knob (intensity)
     illuminatedLamps.clear();
 
     std::optional<double> aoaDeg = sensor.lock()->getAOADeg();
@@ -42,6 +41,11 @@ void AOAIndexer::update(double deltaTimeSeconds) {
 }
 
 void AOAIndexer::updateLamps(double aoaDeg) {
+    if (engine.lock()->isFlagActive(Flag::AGM_45_SELECTED)) {
+        updateLampsAgmCue();
+        return;
+    }
+
     if (aoaDeg > 19.6) {
         illuminatedLamps.emplace(indexer::Lamp::LOW_SPEED);
     }
@@ -51,6 +55,18 @@ void AOAIndexer::updateLamps(double aoaDeg) {
     if (aoaDeg < 18.7) {
         illuminatedLamps.emplace(indexer::Lamp::HIGH_SPEED);
     }
+}
+
+void AOAIndexer::updateLampsAgmCue() {
+    std::map<Agm45Cue, indexer::Lamp> cueToLamp{
+            {Agm45Cue::DIVE, indexer::Lamp::LOW_SPEED},
+            {Agm45Cue::LEVEL, indexer::Lamp::ON_SPEED},
+            {Agm45Cue::PULL_UP, indexer::Lamp::HIGH_SPEED}
+    };
+
+    Agm45Cue cue = engine.lock()->getAgm45Cue();
+
+    illuminatedLamps.emplace(cueToLamp[cue]);
 }
 
 void AOAIndexer::updateLightIntensity() {
