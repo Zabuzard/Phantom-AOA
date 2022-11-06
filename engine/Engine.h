@@ -65,7 +65,8 @@ private:
     const std::map<int32_t, Bus> keyToBus{
             {controls::ESSENTIAL_DC_BUS_POWER,  Bus::ESSENTIAL_DC},
             {controls::RIGHT_MAIN_AC_BUS_POWER, Bus::RIGHT_MAIN_AC},
-            {controls::INSTRUMENT_AC_BUS_POWER, Bus::INSTRUMENT_AC}
+            {controls::INSTRUMENT_AC_BUS_POWER, Bus::INSTRUMENT_AC},
+            {controls::LEFT_MAIN_AC_BUS_POWER,  Bus::LEFT_MAIN_AC}
     };
 
     const std::map<int32_t, CircuitBreaker> keyToCircuitBreaker{
@@ -100,7 +101,7 @@ private:
     Vector3 playerRollAxis{10, 0, 0};
     Vector3 playerPitchAxis{0, 10, 0};
     Vector3 playerYawAxis{0, 0, 10};
-    std::unordered_set<Bus> poweredBuses{Bus::RIGHT_MAIN_AC, Bus::ESSENTIAL_DC, Bus::INSTRUMENT_AC};
+    std::unordered_set<Bus> poweredBuses{Bus::RIGHT_MAIN_AC, Bus::ESSENTIAL_DC, Bus::INSTRUMENT_AC, Bus::LEFT_MAIN_AC};
     std::unordered_set<CircuitBreaker> pulledCircuitBreakers;
     std::chrono::high_resolution_clock::time_point lastToggleInput = std::chrono::high_resolution_clock::now();
     std::unordered_set<Flag> activeFlags;

@@ -78,8 +78,6 @@ void AOAIndicator::simulateNeedleLag(double aoaDeg, double deltaTimeSeconds) {
 }
 
 void AOAIndicator::updateLamp() {
-    // TODO Power, circuit breakers
-
     indicator::LampType type;
     // TODO These ranges are adjustable, figure out the commonly used settings
     if (indicatedAOADeg < 10) {
@@ -93,6 +91,12 @@ void AOAIndicator::updateLamp() {
     // NOTE Technically this is a 3-way switch, not a rotary
     double emergencyFloodlightValue = engine.lock()->getKnobValue(Knob::EMERGENCY_FLOODLIGHT_INTENSITY);
     if (emergencyFloodlightValue < 0.3) {
+        // TODO Probably also has some circuit breakers
+        if (!engine.lock()->isBusPowered(Bus::RIGHT_MAIN_AC)) {
+            illuminatedLamp = std::nullopt;
+            return;
+        }
+
         // Use white light
         double intensity = engine.lock()->getKnobValue(Knob::INSTR_PANEL_LIGHT_INTENSITY);
         illuminatedLamp = {type, intensity, indicator::LampColor::WHITE};
@@ -102,11 +106,22 @@ void AOAIndicator::updateLamp() {
     indicator::LampColor color = indicator::LampColor::RED;
     if (emergencyFloodlightValue < 0.6) {
         // Use dimmed red light
+        // TODO Probably also has some circuit breakers
+        if (!engine.lock()->isBusPowered(Bus::LEFT_MAIN_AC)) {
+            illuminatedLamp = std::nullopt;
+            return;
+        }
+
         illuminatedLamp = {type, 0.5, color};
         return;
     }
 
     // Use bright red light
+    // TODO Probably also has some circuit breakers
+    if (!engine.lock()->isBusPowered(Bus::ESSENTIAL_DC)) {
+        illuminatedLamp = std::nullopt;
+        return;
+    }
     illuminatedLamp = {type, 1, color};
 }
 

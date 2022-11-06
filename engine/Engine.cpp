@@ -17,7 +17,8 @@ std::string Engine::render() const {
     std::map<Bus, std::string> busToName{
             {Bus::ESSENTIAL_DC,  "Ess DC"},
             {Bus::RIGHT_MAIN_AC, "R Main AC"},
-            {Bus::INSTRUMENT_AC, "Instr AC"}
+            {Bus::INSTRUMENT_AC, "Instr AC"},
+            {Bus::LEFT_MAIN_AC,  "L Main AC"}
     };
 
     std::map<CircuitBreaker, std::string> circuitBreakerToName{
