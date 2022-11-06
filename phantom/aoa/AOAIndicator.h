@@ -19,11 +19,17 @@ public:
     void update(double deltaTimeSeconds) override;
 
 private:
+    static constexpr double SMALL_DIFF_NEEDLE_SPEED_DEG_PER_SECOND = 4.5 / 1.0;
+    static constexpr double GREAT_DIFF_NEEDLE_SPEED_DEG_PER_SECOND = 20.0 / 3.0;
+
     const std::weak_ptr<const AOASensor> sensor;
     const std::weak_ptr<const AOAPowerSystem> powerSystem;
 
     double indicatedAOADeg = 0.0;
     boolean showOffFlag = true;
+    boolean hasNeedleCaughtUp = true;
+
+    void simulateNeedleLag(double aoaDeg, double deltaTimeSeconds);
 };
 } // phantom
 

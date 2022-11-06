@@ -30,6 +30,11 @@ namespace math {
     double factor1 = inverseLerp(value1, min1, max1);
     return lerp(factor1, min2, max2);
 }
+
+[[nodiscard]] inline double moveTowards(double source, double step, double target) {
+    return source < target ? std::min(target, source + step)
+                           : std::max(target, source - step);
+}
 } // math
 
 #endif //PHANTOM_AOA_MATH_H

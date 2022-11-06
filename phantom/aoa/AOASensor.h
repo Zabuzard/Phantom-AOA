@@ -58,6 +58,8 @@ private:
     void simulateNoseWheelError();
 
     void simulateSideSlipError();
+
+    static double patchNaN(double value);
 };
 } // phantom
 

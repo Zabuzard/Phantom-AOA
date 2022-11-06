@@ -1,6 +1,8 @@
 #include "AOASensor.h"
 
 #include <sstream>
+#include <cmath>
+
 #include "../../math/Math.h"
 
 namespace phantom {
@@ -65,7 +67,7 @@ void AOASensor::updatePhysicalSideSlip() {
 }
 
 void AOASensor::simulateSensorReading() {
-    // TODO frozen error ...
+    // TODO frozen error, spin error ...
     bool wasTurnedOff = !isTurnedOn;
 
     if (!powerSystem.lock()->hasPrimarySystemPower()) {
@@ -91,6 +93,13 @@ void AOASensor::simulateSensorReading() {
 
     simulateNoseWheelError();
     simulateSideSlipError();
+
+    // Patch computation edge cases
+    if (measuredAOADeg) {
+        measuredAOADeg = std::make_optional(patchNaN(*measuredAOADeg));
+    }
+    physicalAOADeg = patchNaN(physicalAOADeg);
+    physicalSideSlipDeg = patchNaN(physicalSideSlipDeg);
 }
 
 void AOASensor::startWarmup() {
@@ -117,5 +126,10 @@ void AOASensor::simulateSideSlipError() {
     double aoaDegError = math::rangeLerp(relevantSideSlipDeg, -30, 30, 2, -2);
 
     measuredAOADeg = *measuredAOADeg + aoaDegError;
+}
+
+double AOASensor::patchNaN(double value) {
+    // TODO This method should not be needed, check the math to find why it is sometimes NaN around 0
+    return std::isnan(value) ? 0 : value;
 }
 } // phantom
