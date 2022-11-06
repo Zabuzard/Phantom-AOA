@@ -19,6 +19,7 @@ enum class LampColor {
     RED
 };
 
+// MIL-I-18856B(AS): 7
 enum class LampType {
     LOW,
     MEDIUM,
@@ -45,10 +46,10 @@ public:
 
     void update(double deltaTimeSeconds) override;
 
-    [[nodiscard]] std::optional<indicator::Lamp> getIlluminatedLamp() const;
-
 private:
+    // MIL-I-18856B(AS): 8
     static constexpr double SMALL_DIFF_NEEDLE_SPEED_DEG_PER_SECOND = 4.5 / 1.0;
+    // MIL-I-18856B(AS): 8, 15
     static constexpr double GREAT_DIFF_NEEDLE_SPEED_DEG_PER_SECOND = 20.0 / 3.0;
 
     const std::weak_ptr<const AOASensor> sensor;

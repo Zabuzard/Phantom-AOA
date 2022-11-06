@@ -46,6 +46,7 @@ void AOAIndexer::updateLamps(double aoaDeg) {
         return;
     }
 
+    // TO 1F-4E-1: 1-31, Fig 1-8
     if (aoaDeg > 19.6) {
         illuminatedLamps.emplace(indexer::Lamp::LOW_SPEED);
     }
@@ -58,6 +59,7 @@ void AOAIndexer::updateLamps(double aoaDeg) {
 }
 
 void AOAIndexer::updateLampsAgmCue() {
+    // TO 1F-4C-34-1-1: 1-114H Fig 1-45
     std::map<Agm45Cue, indexer::Lamp> cueToLamp{
             {Agm45Cue::DIVE,    indexer::Lamp::LOW_SPEED},
             {Agm45Cue::LEVEL,   indexer::Lamp::ON_SPEED},

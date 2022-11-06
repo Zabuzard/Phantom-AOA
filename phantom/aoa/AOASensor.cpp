@@ -68,7 +68,7 @@ void AOASensor::updatePhysicalSideSlip() {
 }
 
 void AOASensor::simulateSensorReading() {
-    // TODO icing error, spin/stall error
+    // TODO spin/stall error
     bool wasTurnedOff = !isTurnedOn;
 
     if (!powerSystem.lock()->hasPrimarySystemPower()) {
@@ -112,6 +112,7 @@ void AOASensor::startWarmup() {
     double temperature = engine.lock()->getOutsideTemperatureCelsius();
     double relevantTemperature = math::clamp(temperature, -54, 30);
 
+    // MIL-I-18856B(AS): 8
     double warmUpDurationSeconds = math::rangeLerp(relevantTemperature, -54, 30, 120, 2);
     warmedUpAt = std::chrono::high_resolution_clock::now() +
                  std::chrono::seconds(static_cast<int32_t>(warmUpDurationSeconds));
@@ -119,12 +120,16 @@ void AOASensor::startWarmup() {
 
 void AOASensor::simulateNoseWheelError() {
     if (!engine.lock()->isFlagActive(Flag::NOSE_WHEEL_EXTENDED)) {
+        // TO 1F-4E-1: 1-30
         measuredAOADeg = *measuredAOADeg - 1;
     }
 }
 
 void AOASensor::simulateSideSlipError() {
+    // TODO The manual does not specify actual angles, only says "full rudder at low speed",
+    //  30° sounds reasonable, needs further testing
     double relevantSideSlipDeg = math::clamp(physicalSideSlipDeg, -30, 30);
+    // TO 1F-4E-1: 6-6
     double aoaDegError = math::rangeLerp(relevantSideSlipDeg, -30, 30, 2, -2);
 
     measuredAOADeg = *measuredAOADeg + aoaDegError;
@@ -139,7 +144,7 @@ void AOASensor::simulateFrozenSensor() {
     std::random_device device;
     std::mt19937 rng(device());
 
-    // Jitters around in the high angles
+    // Jitters around in the high angles, see TO 1F-4E-1: 1-30
     std::uniform_real_distribution<double> dist(20, 50);
 
     measuredAOADeg = dist(rng);

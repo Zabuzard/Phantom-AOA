@@ -21,11 +21,12 @@ void StallWarningVibrator::update(double deltaTimeSeconds) {
     std::optional<double> aoaDeg = sensor.lock()->getAOADeg();
     if (!aoaDeg
         || !powerSystem.lock()->hasSecondarySystemPower()
-        || hasWeightOnWheel()) {
+        || hasWeightOnWheel()) { // TO 1F-4E-1: 1-23
         vibrating = false;
         return;
     }
 
+    // TO 1F-4E-1: 1-23
     vibrating = aoaDeg >= 22.3;
 }
 

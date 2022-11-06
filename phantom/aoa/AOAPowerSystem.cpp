@@ -4,6 +4,7 @@ namespace phantom {
 AOAPowerSystem::AOAPowerSystem(std::weak_ptr<const Engine> engine) : engine{std::move(engine)} {}
 
 boolean AOAPowerSystem::hasPrimarySystemPower() const {
+    // TO 1F-4E-1: 1-15 to 1-17, FO-3, FO-4
     auto lockedEngine = engine.lock();
 
     // TODO The details on this are a bit unclear, needs further clarification
@@ -17,6 +18,7 @@ boolean AOAPowerSystem::hasPrimarySystemPower() const {
 }
 
 boolean AOAPowerSystem::hasSecondarySystemPower() const {
+    // TO 1F-4E-1: 1-15 to 1-17, FO-3, FO-4
     auto lockedEngine = engine.lock();
 
     // TODO The details on this are a bit unclear, needs further clarification

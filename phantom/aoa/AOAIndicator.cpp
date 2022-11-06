@@ -42,8 +42,8 @@ void AOAIndicator::update(double deltaTimeSeconds) {
 void AOAIndicator::updateIndication(double deltaTimeSeconds) {
     std::optional<double> aoaDeg = sensor.lock()->getAOADeg();
     if (!aoaDeg || powerSystem.lock()->hasPrimarySystemPower()) {
-        // Needle is stuck in previous indication
-        showOffFlag = true;
+        // Needle is stuck in previous indication, see MIL-I-18856B(AS): 15
+        showOffFlag = true; // MIL-I-18856B(AS): 13
     }
 
     // Indicator limits
@@ -56,7 +56,7 @@ void AOAIndicator::updateIndication(double deltaTimeSeconds) {
 void AOAIndicator::simulateNeedleLag(double aoaDeg, double deltaTimeSeconds) {
     double diffDeg = std::abs(aoaDeg - indicatedAOADeg);
 
-    // Dampening to prevent jitter
+    // Dampening to prevent jitter, see MIL-I-18856B(AS): 13
     if (hasNeedleCaughtUp && diffDeg < 0.25) {
         return;
     }

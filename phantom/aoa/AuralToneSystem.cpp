@@ -54,6 +54,7 @@ void AuralToneSystem::update(double deltaTimeSeconds) {
         return;
     }
 
+    // TO 1F-4E-1: 1-30 to 1-31, Fig 1-9
     bool useLandingProfile =
             engine.lock()->isFlagActive(Flag::SLATS_IN) || engine.lock()->isFlagActive(Flag::GEAR_EXTENDED);
 
@@ -63,6 +64,7 @@ void AuralToneSystem::update(double deltaTimeSeconds) {
 }
 
 std::vector<Tone> AuralToneSystem::getTonesForLandingProfile(double aoaDeg, double volume) {
+    // TO 1F-4E-1: 1-30 to 1-31, Fig 1-9
     if (aoaDeg < 15) {
         return {};
     }
@@ -87,6 +89,7 @@ std::vector<Tone> AuralToneSystem::getTonesForLandingProfile(double aoaDeg, doub
 }
 
 std::vector<Tone> AuralToneSystem::getTonesForFlightProfile(double aoaDeg, double volume) {
+    // TO 1F-4E-1: 1-30 to 1-31, Fig 1-9
     if (aoaDeg < 21) {
         return {};
     }

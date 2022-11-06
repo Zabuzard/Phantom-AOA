@@ -169,9 +169,7 @@ double Engine::getOutsideTemperatureCelsius() const {
 
     std::uniform_real_distribution<double> dist(-30, 30);
 
-    // FIXME Re-enable before release, was just disabled for testing convenience
-    // return dist(rng);
-    return 30;
+    return dist(rng);
 }
 
 double Engine::getKnobValue(Knob knob) const {
