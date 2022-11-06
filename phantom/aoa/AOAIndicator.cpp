@@ -32,7 +32,10 @@ void AOAIndicator::update(double deltaTimeSeconds) {
         return;
     }
 
-    simulateNeedleLag(*aoaDeg, deltaTimeSeconds);
+    // Indicator limits
+    double targetAoaDeg = math::clamp(*aoaDeg, 0, 30);
+
+    simulateNeedleLag(targetAoaDeg, deltaTimeSeconds);
     showOffFlag = false;
 }
 
@@ -45,7 +48,8 @@ void AOAIndicator::simulateNeedleLag(double aoaDeg, double deltaTimeSeconds) {
     }
     hasNeedleCaughtUp = false;
 
-    double degPerSecond = diffDeg <= 10 ? SMALL_DIFF_NEEDLE_SPEED_DEG_PER_SECOND : GREAT_DIFF_NEEDLE_SPEED_DEG_PER_SECOND;
+    double degPerSecond =
+            diffDeg <= 10 ? SMALL_DIFF_NEEDLE_SPEED_DEG_PER_SECOND : GREAT_DIFF_NEEDLE_SPEED_DEG_PER_SECOND;
     double moveNeedleByDeg = degPerSecond * deltaTimeSeconds;
 
     indicatedAOADeg = math::moveTowards(indicatedAOADeg, moveNeedleByDeg, aoaDeg);

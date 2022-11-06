@@ -32,7 +32,9 @@ std::string Engine::render() const {
 
     std::map<Flag, std::string> flagToName{
             {Flag::NOSE_WHEEL_EXTENDED, "Nose wheel out"},
-            {Flag::WEIGHT_ON_WHEEL,     "Weight on Wheel"}
+            {Flag::WEIGHT_ON_WHEEL,     "Weight on Wheel"},
+            {Flag::GEAR_EXTENDED,       "Gear out"},
+            {Flag::SLATS_IN,            "Slats in"}
     };
 
     std::stringstream ss;

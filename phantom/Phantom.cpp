@@ -18,7 +18,7 @@ Phantom::Phantom(const std::weak_ptr<const Engine>& engine) {
     entities.push_back(std::make_shared<phantom::AOAIndicator>(sensor, aoaPowerSystem));
     entities.push_back(std::make_shared<phantom::AOAIndexer>(sensor, aoaPowerSystem));
     entities.push_back(std::make_shared<phantom::StallWarningVibrator>(sensor, aoaPowerSystem, engine));
-    entities.push_back(std::make_shared<phantom::AuralToneSystem>(sensor, aoaPowerSystem));
+    entities.push_back(std::make_shared<phantom::AuralToneSystem>(sensor, aoaPowerSystem, engine));
 }
 
 void Phantom::initialize() {

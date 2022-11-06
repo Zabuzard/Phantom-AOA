@@ -2,20 +2,24 @@
 #define PHANTOM_AOA_AURALTONESYSTEM_H
 
 #include <optional>
+#include <vector>
 
 #include "../../engine/Entity.h"
+#include "../../engine/Engine.h"
 #include "AOASensor.h"
 #include "AOAPowerSystem.h"
 
 namespace phantom {
 struct Tone final {
-    double frequency;
-    double volume;
+    double frequency = 0;
+    std::optional<double> pulsePerSecond;
+    double volume = 0;
 };
 
 class AuralToneSystem final : public Entity {
 public:
-    explicit AuralToneSystem(std::weak_ptr<const AOASensor> sensor, std::weak_ptr<const AOAPowerSystem> powerSystem);
+    explicit AuralToneSystem(std::weak_ptr<const AOASensor> sensor, std::weak_ptr<const AOAPowerSystem> powerSystem,
+                             std::weak_ptr<const Engine> engine);
 
     ~AuralToneSystem() override = default;
 
@@ -25,13 +29,20 @@ public:
 
     void update(double deltaTimeSeconds) override;
 
-    [[nodiscard]] std::optional<Tone> getTone() const;
+    [[nodiscard]] std::vector<Tone> getTones() const;
 
 private:
     const std::weak_ptr<const AOASensor> sensor;
     const std::weak_ptr<const AOAPowerSystem> powerSystem;
+    const std::weak_ptr<const Engine> engine;
 
-    std::optional<Tone> tone;
+    std::vector<Tone> tones;
+
+    [[nodiscard]] static std::vector<Tone> getTonesForLandingProfile(double aoaDeg, double volume);
+
+    [[nodiscard]] static std::vector<Tone> getTonesForFlightProfile(double aoaDeg, double volume);
+
+    [[nodiscard]] double getVolume() const;
 };
 } // phantom
 

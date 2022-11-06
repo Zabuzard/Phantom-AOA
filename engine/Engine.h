@@ -55,8 +55,8 @@ public:
     [[nodiscard]] bool isFlagActive(Flag flag) const;
 
 private:
-    static constexpr double CHANGE_PITCH_DEG_PER_SECOND = 7;
-    static constexpr double CHANGE_YAW_DEG_PER_SECOND = 7;
+    static constexpr double CHANGE_PITCH_DEG_PER_SECOND = 5;
+    static constexpr double CHANGE_YAW_DEG_PER_SECOND = 5;
 
     const std::map<int32_t, Bus> keyToBus{
             {controls::ESSENTIAL_DC_BUS_POWER,  Bus::ESSENTIAL_DC},
@@ -76,7 +76,9 @@ private:
 
     const std::map<int32_t, Flag> keyToFlag{
             {controls::NOSE_WHEEL_FLAG,      Flag::NOSE_WHEEL_EXTENDED},
-            {controls::WEIGHT_ON_WHEEL_FLAG, Flag::WEIGHT_ON_WHEEL}
+            {controls::WEIGHT_ON_WHEEL_FLAG, Flag::WEIGHT_ON_WHEEL},
+            {controls::GEAR_FLAG,            Flag::GEAR_EXTENDED},
+            {controls::SLATS_FLAG,           Flag::SLATS_IN}
     };
 
     // NOTE Values can also be adjusted here manually to play with the system

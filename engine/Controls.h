@@ -24,6 +24,8 @@ constexpr int32_t RM_VAC_AC_CADC_PWR_3_CB = 'J';
 
 constexpr int32_t NOSE_WHEEL_FLAG = 'Y';
 constexpr int32_t WEIGHT_ON_WHEEL_FLAG = 'X';
+constexpr int32_t GEAR_FLAG = 'C';
+constexpr int32_t SLATS_FLAG = 'V';
 }
 
 #endif //PHANTOM_AOA_CONTROLS_H

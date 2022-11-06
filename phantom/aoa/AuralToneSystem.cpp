@@ -2,37 +2,124 @@
 
 #include <sstream>
 
+#include "../../math/Math.h"
+
 namespace phantom {
-AuralToneSystem::AuralToneSystem(std::weak_ptr<const AOASensor> sensor, std::weak_ptr<const AOAPowerSystem> powerSystem)
-        : sensor{std::move(sensor)}, powerSystem{std::move(powerSystem)} {}
+AuralToneSystem::AuralToneSystem(std::weak_ptr<const AOASensor> sensor, std::weak_ptr<const AOAPowerSystem> powerSystem,
+                                 std::weak_ptr<const Engine> engine)
+        : sensor{std::move(sensor)}, powerSystem{std::move(powerSystem)}, engine{std::move(engine)} {}
 
 void AuralToneSystem::initialize() {}
 
 std::string AuralToneSystem::render() const {
-    if (!tone) {
-        return "aural tone system (_)";
+    std::stringstream ss;
+    ss << "aural tone system (";
+
+    if (tones.empty()) {
+        ss << "_)";
+        return ss.str();
     }
 
-    std::stringstream ss;
-    ss << "aural tone system (BEEP[freq="
-       << tone->frequency << ", vol=" << tone->volume
-       << "])";
+    for (const auto& tone: tones) {
+        std::string noise;
+        if (tone.frequency < 600) {
+            noise = "mmmm";
+        } else if (tone.frequency < 1200) {
+            noise = "beep";
+        } else {
+            noise = "BEEP";
+        }
 
+        ss << noise << "[";
+
+        if (tone.pulsePerSecond) {
+            ss << "pps=" << *tone.pulsePerSecond;
+        } else {
+            ss << "steady";
+        }
+
+        ss << ",vol=" << tone.volume << "], ";
+    }
+
+    ss << ")";
     return ss.str();
 }
 
 void AuralToneSystem::update(double deltaTimeSeconds) {
-    // TODO icing, volume knob, actual tone profile (also for slats/gear up/down)
+    // TODO icing, volume knob
     std::optional<double> aoaDeg = sensor.lock()->getAOADeg();
     if (!aoaDeg || !powerSystem.lock()->hasSecondarySystemPower()) {
-        tone = std::nullopt;
+        tones.clear();
         return;
     }
 
-    tone = aoaDeg > 20.3 ? std::make_optional<Tone>({1, 1}) : std::nullopt;
+    bool useLandingProfile =
+            engine.lock()->isFlagActive(Flag::SLATS_IN) || engine.lock()->isFlagActive(Flag::GEAR_EXTENDED);
+
+    double volume = getVolume();
+    tones = useLandingProfile ? getTonesForLandingProfile(*aoaDeg, volume)
+                              : getTonesForFlightProfile(*aoaDeg, volume);
 }
 
-std::optional<Tone> AuralToneSystem::getTone() const {
-    return tone;
+std::vector<Tone> AuralToneSystem::getTones() const {
+    return tones;
+}
+
+std::vector<Tone> AuralToneSystem::getTonesForLandingProfile(double aoaDeg, double volume) {
+    if (aoaDeg < 15) {
+        return {};
+    }
+
+    std::vector<Tone> tones;
+    if (15 <= aoaDeg && aoaDeg <= 18.7) {
+        double pulsePerSecond = math::rangeLerp(aoaDeg, 15, 18.7, 1.5, 8.2);
+        tones.push_back({400, pulsePerSecond, volume});
+    }
+    if (18.1 <= aoaDeg && aoaDeg <= 20.3) {
+        tones.push_back({900, std::nullopt, volume});
+    }
+    if (19.7 <= aoaDeg && aoaDeg <= 22.3) {
+        double pulsePerSecond = math::rangeLerp(aoaDeg, 19.7, 22.3, 1.5, 6.2);
+        tones.push_back({1600, pulsePerSecond, volume});
+    }
+    if (aoaDeg > 22.3) {
+        tones.push_back({1600, 20, volume});
+    }
+
+    return tones;
+}
+
+std::vector<Tone> AuralToneSystem::getTonesForFlightProfile(double aoaDeg, double volume) {
+    if (aoaDeg < 21) {
+        return {};
+    }
+
+    if (aoaDeg >= 25) {
+        // Ensure volume knob can not mute the sound
+        volume = std::max(volume, 2.0);
+    }
+
+    std::vector<Tone> tones;
+    if (21 <= aoaDeg && aoaDeg <= 23.5) {
+        double pulsePerSecond = math::rangeLerp(aoaDeg, 21, 23.5, 1.5, 6);
+        tones.push_back({400, pulsePerSecond, volume});
+    }
+    if (23 <= aoaDeg && aoaDeg <= 25) {
+        tones.push_back({900, std::nullopt, volume});
+    }
+    if (24.5 <= aoaDeg && aoaDeg <= 29) {
+        double pulsePerSecond = math::rangeLerp(aoaDeg, 24.5, 29, 1.5, 9.6);
+        tones.push_back({1600, pulsePerSecond, volume});
+    }
+    if (aoaDeg > 29) {
+        tones.push_back({1600, 20, volume});
+    }
+
+    return tones;
+}
+
+double AuralToneSystem::getVolume() const {
+    // TODO Actually check the volume knob instead
+    return 1;
 }
 } // phantom
