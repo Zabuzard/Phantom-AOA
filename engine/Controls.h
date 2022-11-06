@@ -32,6 +32,8 @@ constexpr int32_t INSTR_PANEL_LIGHT_DECR_KNOB = 'T';
 constexpr int32_t INSTR_PANEL_LIGHT_INCR_KNOB = 'Z';
 constexpr int32_t EMERGENCY_FLOODLIGHT_DECR_KNOB = 'U';
 constexpr int32_t EMERGENCY_FLOODLIGHT_INCR_KNOB = 'I';
+constexpr int32_t INDEXER_LIGHT_DECR_KNOB = 'O';
+constexpr int32_t INDEXER_LIGHT_INCR_KNOB = 'P';
 }
 
 #endif //PHANTOM_AOA_CONTROLS_H

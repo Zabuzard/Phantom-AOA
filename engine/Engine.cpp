@@ -40,7 +40,8 @@ std::string Engine::render() const {
 
     std::map<Knob, std::string> knobToName{
             {Knob::INSTR_PANEL_LIGHT_INTENSITY,    "INSTR Light"},
-            {Knob::EMERGENCY_FLOODLIGHT_INTENSITY, "EMR Flood"}
+            {Knob::EMERGENCY_FLOODLIGHT_INTENSITY, "EMR Flood"},
+            {Knob::INDEXER_LIGHT_INTENSITY,        "INDX Light"}
     };
 
     std::stringstream ss;

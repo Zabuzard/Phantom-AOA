@@ -88,12 +88,14 @@ private:
 
     const std::map<int32_t, Knob> keyToKnobDecrease{
             {controls::INSTR_PANEL_LIGHT_DECR_KNOB, Knob::INSTR_PANEL_LIGHT_INTENSITY},
-            {controls::EMERGENCY_FLOODLIGHT_DECR_KNOB, Knob::EMERGENCY_FLOODLIGHT_INTENSITY}
+            {controls::EMERGENCY_FLOODLIGHT_DECR_KNOB, Knob::EMERGENCY_FLOODLIGHT_INTENSITY},
+            {controls::INDEXER_LIGHT_DECR_KNOB, Knob::INDEXER_LIGHT_INTENSITY}
     };
 
     const std::map<int32_t, Knob> keyToKnobIncrease{
             {controls::INSTR_PANEL_LIGHT_INCR_KNOB, Knob::INSTR_PANEL_LIGHT_INTENSITY},
-            {controls::EMERGENCY_FLOODLIGHT_INCR_KNOB, Knob::EMERGENCY_FLOODLIGHT_INTENSITY}
+            {controls::EMERGENCY_FLOODLIGHT_INCR_KNOB, Knob::EMERGENCY_FLOODLIGHT_INTENSITY},
+            {controls::INDEXER_LIGHT_INCR_KNOB, Knob::INDEXER_LIGHT_INTENSITY}
     };
 
     // NOTE Values can also be adjusted here manually to play with the system

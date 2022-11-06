@@ -19,7 +19,8 @@ enum class Lamp {
 
 class AOAIndexer final : public Entity {
 public:
-    explicit AOAIndexer(std::weak_ptr<const AOASensor> sensor, std::weak_ptr<const AOAPowerSystem> powerSystem);
+    explicit AOAIndexer(std::weak_ptr<const AOASensor> sensor, std::weak_ptr<const AOAPowerSystem> powerSystem,
+                        std::weak_ptr<const Engine> engine);
 
     ~AOAIndexer() override = default;
 
@@ -34,8 +35,14 @@ public:
 private:
     const std::weak_ptr<const AOASensor> sensor;
     const std::weak_ptr<const AOAPowerSystem> powerSystem;
+    const std::weak_ptr<const Engine> engine;
 
     std::unordered_set<indexer::Lamp> illuminatedLamps;
+    double lightIntensity = 0.1;
+
+    void updateLamps(double aoaDeg);
+
+    void updateLightIntensity();
 };
 } // phantom
 
