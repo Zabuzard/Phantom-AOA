@@ -3,6 +3,8 @@
 
 #include "../../engine/Entity.h"
 #include "../../engine/Engine.h"
+#include "../../util/Ansi.h"
+
 #include "AOASensor.h"
 #include "AOAPowerSystem.h"
 
@@ -53,13 +55,6 @@ private:
     const std::weak_ptr<const AOAPowerSystem> powerSystem;
     const std::weak_ptr<const Engine> engine;
 
-    // TODO Move into helper class, also use them for indexer
-    const std::string ANSI_BLACK = "\u001B[30m";
-    const std::string ANSI_WHITE = "\u001B[37m";
-    const std::string ANSI_WHITE_BACKGROUND = "\u001B[47m";
-    const std::string ANSI_RED_BACKGROUND = "\u001B[41m";
-    const std::string ANSI_COLOR_RESET = "\u001B[0m";
-
     double indicatedAOADeg = 0.0;
     boolean showOffFlag = true;
     boolean hasNeedleCaughtUp = true;
@@ -72,8 +67,8 @@ private:
     };
 
     std::map<indicator::LampColor, std::string> lampColorToName{
-            {indicator::LampColor::WHITE, ANSI_WHITE_BACKGROUND + ANSI_BLACK + "white" + ANSI_COLOR_RESET},
-            {indicator::LampColor::RED,   ANSI_RED_BACKGROUND + ANSI_WHITE + "red" + ANSI_COLOR_RESET}
+            {indicator::LampColor::WHITE, ansi::WHITE_BACKGROUND + ansi::BLACK + "white" + ansi::COLOR_RESET},
+            {indicator::LampColor::RED,   ansi::RED_BACKGROUND + ansi::WHITE + "red" + ansi::COLOR_RESET}
     };
 
     void updateIndication(double deltaTimeSeconds);

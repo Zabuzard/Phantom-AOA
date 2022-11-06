@@ -1,5 +1,7 @@
 #include "StallWarningVibrator.h"
 
+#include "../../util/Ansi.h"
+
 namespace phantom {
 StallWarningVibrator::StallWarningVibrator(std::weak_ptr<const AOASensor> sensor,
                                            std::weak_ptr<const AOAPowerSystem> powerSystem,
@@ -9,7 +11,8 @@ StallWarningVibrator::StallWarningVibrator(std::weak_ptr<const AOASensor> sensor
 void StallWarningVibrator::initialize() {}
 
 std::string StallWarningVibrator::render() const {
-    std::string description = vibrating ? "BRRRRRRRRT" : "_";
+    std::string description = vibrating ? (ansi::WHITE_BACKGROUND + ansi::BLACK + "BRRRRRRRRT" + ansi::COLOR_RESET)
+                                        : "_";
 
     return "stall warning vibrator (" + description + ")";
 }

@@ -79,10 +79,10 @@ private:
     };
 
     const std::map<int32_t, Flag> keyToFlag{
-            {controls::NOSE_WHEEL_FLAG,      Flag::NOSE_WHEEL_EXTENDED},
+            {controls::NOSE_WHEEL_FLAG, Flag::NOSE_WHEEL_EXTENDED},
             {controls::WEIGHT_ON_WHEEL_FLAG, Flag::WEIGHT_ON_WHEEL},
-            {controls::GEAR_FLAG,            Flag::GEAR_EXTENDED},
-            {controls::SLATS_FLAG,           Flag::SLATS_IN}
+            {controls::GEAR_FLAG, Flag::GEAR_EXTENDED},
+            {controls::SLATS_FLAG, Flag::SLATS_IN}
     };
 
     const std::map<int32_t, Knob> keyToKnobDecrease{
@@ -105,7 +105,7 @@ private:
     std::chrono::high_resolution_clock::time_point lastToggleInput = std::chrono::high_resolution_clock::now();
     std::unordered_set<Flag> activeFlags;
     std::map<Knob, double> knobToValue{
-            {Knob::INSTR_PANEL_LIGHT_INTENSITY, 0},
+            {Knob::INSTR_PANEL_LIGHT_INTENSITY,    0},
             {Knob::EMERGENCY_FLOODLIGHT_INTENSITY, 0}
     };
 

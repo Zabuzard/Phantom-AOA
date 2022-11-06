@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "../../math/Math.h"
+#include "../../util/Ansi.h"
 
 namespace phantom {
 AuralToneSystem::AuralToneSystem(std::weak_ptr<const AOASensor> sensor, std::weak_ptr<const AOAPowerSystem> powerSystem,
@@ -21,14 +22,15 @@ std::string AuralToneSystem::render() const {
     }
 
     for (const auto& tone: tones) {
-        std::string noise;
+        std::string noise = ansi::WHITE;
         if (tone.frequency < 600) {
-            noise = "mmmm";
+            noise += ansi::CYAN_BACKGROUND + "mmmm";
         } else if (tone.frequency < 1200) {
-            noise = "beep";
+            noise += ansi::YELLOW_BACKGROUND + "beep";
         } else {
-            noise = "BEEP";
+            noise += ansi::RED_BACKGROUND + "BEEP";
         }
+        noise += ansi::COLOR_RESET;
 
         ss << noise << "[";
 

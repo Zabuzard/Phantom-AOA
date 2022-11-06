@@ -1,5 +1,7 @@
 #include "AOAIndexer.h"
 
+#include "../../util/Ansi.h"
+
 #include <sstream>
 
 namespace phantom {
@@ -15,9 +17,11 @@ std::string AOAIndexer::render() const {
 
     std::stringstream ss;
     ss << "indexer ("
-       << (illuminatedLamps.contains(indexer::Lamp::LOW_SPEED) ? ">" : " ")
-       << (illuminatedLamps.contains(indexer::Lamp::ON_SPEED) ? "o" : " ")
-       << (illuminatedLamps.contains(indexer::Lamp::HIGH_SPEED) ? "<" : " ")
+       << ansi::BLACK_BACKGROUND
+       << ansi::GREEN << (illuminatedLamps.contains(indexer::Lamp::LOW_SPEED) ? ">" : " ")
+       << ansi::YELLOW << (illuminatedLamps.contains(indexer::Lamp::ON_SPEED) ? "o" : " ")
+       << ansi::RED << (illuminatedLamps.contains(indexer::Lamp::HIGH_SPEED) ? "<" : " ")
+       << ansi::COLOR_RESET
        << ")";
     return ss.str();
 }
