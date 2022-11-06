@@ -10,6 +10,7 @@
 
 namespace phantom {
 Phantom::Phantom(const std::weak_ptr<const Engine>& engine) {
+    // Setup of the aircraft and all its components
     aoaPowerSystem = std::make_shared<phantom::AOAPowerSystem>(engine);
 
     auto sensor = std::make_shared<phantom::AOASensor>(engine, aoaPowerSystem);

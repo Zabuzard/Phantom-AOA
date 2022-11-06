@@ -145,6 +145,8 @@ void Engine::updateAircraftOrientation(double deltaTimeSeconds) {
 }
 
 bool Engine::isKeyPressed(int keyCode) {
+    // TODO The only reason why the simulation only works on Windows right now,
+    //  try to get a platform-independent solution.
     auto keyState = GetKeyState(keyCode);
 
     // High order bit indicates pressed

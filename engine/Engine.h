@@ -21,6 +21,7 @@ enum class Agm45Cue {
 };
 
 class Engine final : public Entity {
+    // NOTE This class mostly represents all inputs that are kinda out of the scope for this simulation
 public:
     ~Engine() override = default;
 
@@ -30,11 +31,17 @@ public:
 
     [[nodiscard]] std::string render() const override;
 
+    /**
+     * The current flight path vector of the players aircraft.
+     * 
+     * @return current flight path
+     */
     [[nodiscard]] Vector3 getPlayerFlightPath() const;
 
     /**
      * The axis around which the players aircraft would roll. Normal vector on the planes x-axis,
      * i.e. where the nose and chords are pointing to, or if the pilot looks straight ahead.
+     *
      * @return the players aircraft roll axis
      */
     [[nodiscard]] Vector3 getPlayerRollAxis() const;
@@ -42,6 +49,7 @@ public:
     /**
      * The axis around which the players aircraft would pitch. Normal vector on the planes y-axis,
      * i.e. if the pilot would look to the left.
+     *
      * @return the players aircraft pitch axis
      */
     [[nodiscard]] Vector3 getPlayerPitchAxis() const;
@@ -49,6 +57,7 @@ public:
     /**
      * The axis around which the players aircraft would yaw. Normal vector on the planes z-axis,
      * i.e. if the pilot would look up.
+     *
      * @return the players aircraft yaw axis
      */
     [[nodiscard]] Vector3 getPlayerYawAxis() const;
@@ -61,11 +70,18 @@ public:
 
     [[nodiscard]] bool isFlagActive(Flag flag) const;
 
+    /**
+     * The current value of the rotary knob.
+     *
+     * @param knob to get the value of
+     * @return the knobs value, between 0.0 and 1.0 (both inclusive)
+     */
     [[nodiscard]] double getKnobValue(Knob knob) const;
 
     [[nodiscard]] Agm45Cue getAgm45Cue() const;
 
 private:
+    // NOTE Can be adjusted to change the movement speed
     static constexpr double CHANGE_PITCH_DEG_PER_SECOND = 5;
     static constexpr double CHANGE_YAW_DEG_PER_SECOND = 5;
     static constexpr double CHANGE_KNOB_VALUE_PER_SECOND = 0.2;
@@ -110,7 +126,7 @@ private:
             {controls::AURAL_TONE_VOLUME_INCR_KNOB,    Knob::AURAL_TONE_VOLUME}
     };
 
-    // NOTE Values can also be adjusted here manually to play with the system
+    // NOTE Initial state, values can also be adjusted here manually to play with the system
     Vector3 playerFlightPath{10, 0, 0};
     Vector3 playerRollAxis{10, 0, 0};
     Vector3 playerPitchAxis{0, 10, 0};
@@ -130,6 +146,7 @@ private:
 
     template<class T>
     void updateToggleInputs(std::unordered_set<T>& activeComponents, const std::map<int32_t, T>& keyToComponent) {
+        // For better UX, will wait a bit after pressing a button before accepting another input
         if (isToggleInputOnCooldown()) {
             return;
         }

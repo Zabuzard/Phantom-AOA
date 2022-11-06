@@ -30,8 +30,6 @@ public:
 
     void update(double deltaTimeSeconds) override;
 
-    [[nodiscard]] std::unordered_set<indexer::Lamp> getIlluminatedLamps() const;
-
 private:
     const std::weak_ptr<const AOASensor> sensor;
     const std::weak_ptr<const AOAPowerSystem> powerSystem;

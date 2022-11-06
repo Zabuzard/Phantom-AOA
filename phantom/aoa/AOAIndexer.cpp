@@ -80,8 +80,4 @@ void AOAIndexer::updateLightIntensity() {
     // Knob can not turn the light completely off
     lightIntensity = std::max(0.1, lightIntensity);
 }
-
-std::unordered_set<indexer::Lamp> AOAIndexer::getIlluminatedLamps() const {
-    return illuminatedLamps;
-}
 } // phantom

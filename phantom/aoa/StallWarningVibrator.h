@@ -21,8 +21,6 @@ public:
 
     void update(double deltaTimeSeconds) override;
 
-    [[nodiscard]] bool isVibrating() const;
-
 private:
     const std::weak_ptr<const AOASensor> sensor;
     const std::weak_ptr<const AOAPowerSystem> powerSystem;

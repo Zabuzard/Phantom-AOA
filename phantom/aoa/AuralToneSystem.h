@@ -29,8 +29,6 @@ public:
 
     void update(double deltaTimeSeconds) override;
 
-    [[nodiscard]] std::vector<Tone> getTones() const;
-
 private:
     const std::weak_ptr<const AOASensor> sensor;
     const std::weak_ptr<const AOAPowerSystem> powerSystem;

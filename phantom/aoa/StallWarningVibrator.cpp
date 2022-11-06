@@ -29,10 +29,6 @@ void StallWarningVibrator::update(double deltaTimeSeconds) {
     vibrating = aoaDeg >= 22.3;
 }
 
-bool StallWarningVibrator::isVibrating() const {
-    return vibrating;
-}
-
 bool StallWarningVibrator::hasWeightOnWheel() {
     return engine.lock()->isFlagActive(Flag::WEIGHT_ON_WHEEL);
 }

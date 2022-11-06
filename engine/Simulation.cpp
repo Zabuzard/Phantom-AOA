@@ -60,7 +60,7 @@ void Simulation::initializeAll() const {
 
 void Simulation::renderAll() const {
     std::cout << ansi::CLEAR_SCREEN
-              << "Best viewed on a ANSI-compatible console. Interaction only works on Windows. Press CTRL+C to end the simulation.\n"
+              << "Best viewed on an ANSI-compatible console. Interaction only works on Windows. Press CTRL+C to end the simulation.\n"
               << "Press the arrow keys to change the aircraft orientation.\n"
               << "Press QWER to toggle buses, ASDFGHJ for circuit breakers.\n"
               << "Rotate knobs: Instr lights (TZ), Emr flood (UI), Indx light (OP), Aural Vol (KL)\n"
@@ -75,6 +75,7 @@ void Simulation::renderAll() const {
 }
 
 void Simulation::updateAll(double deltaTimeSeconds) const {
+    // NOTE While the system currently has a fixed delta-time, it supports variable values as well
     for (const auto& entity: entities) {
         entity->update(deltaTimeSeconds);
     }

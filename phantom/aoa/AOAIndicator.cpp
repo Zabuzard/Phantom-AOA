@@ -11,10 +11,6 @@ AOAIndicator::AOAIndicator(std::weak_ptr<const AOASensor> sensor, std::weak_ptr<
 
 void AOAIndicator::initialize() {}
 
-std::optional<indicator::Lamp> AOAIndicator::getIlluminatedLamp() const {
-    return illuminatedLamp;
-}
-
 std::string AOAIndicator::render() const {
     std::stringstream ss;
     ss << "indicator (";

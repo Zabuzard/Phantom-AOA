@@ -62,10 +62,6 @@ void AuralToneSystem::update(double deltaTimeSeconds) {
                               : getTonesForFlightProfile(*aoaDeg, volume);
 }
 
-std::vector<Tone> AuralToneSystem::getTones() const {
-    return tones;
-}
-
 std::vector<Tone> AuralToneSystem::getTonesForLandingProfile(double aoaDeg, double volume) {
     if (aoaDeg < 15) {
         return {};
