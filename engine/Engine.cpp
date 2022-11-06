@@ -36,7 +36,8 @@ std::string Engine::render() const {
             {Flag::WEIGHT_ON_WHEEL,     "Weight on Wheel"},
             {Flag::GEAR_EXTENDED,       "Gear out"},
             {Flag::SLATS_IN,            "Slats in"},
-            {Flag::AGM_45_SELECTED,     "AGM-45 selected"}
+            {Flag::AGM_45_SELECTED,     "AGM-45 selected"},
+            {Flag::FROZEN_AOA_SENSOR,   "AOA sensor frozen"}
     };
 
     std::map<Knob, std::string> knobToName{

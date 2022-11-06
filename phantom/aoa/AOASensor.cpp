@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <cmath>
+#include <random>
 
 #include "../../math/Math.h"
 
@@ -93,6 +94,7 @@ void AOASensor::simulateSensorReading() {
 
     simulateNoseWheelError();
     simulateSideSlipError();
+    simulateFrozenSensor();
 
     // Patch computation edge cases
     if (measuredAOADeg) {
@@ -126,6 +128,21 @@ void AOASensor::simulateSideSlipError() {
     double aoaDegError = math::rangeLerp(relevantSideSlipDeg, -30, 30, 2, -2);
 
     measuredAOADeg = *measuredAOADeg + aoaDegError;
+}
+
+void AOASensor::simulateFrozenSensor() {
+    // TODO Should actually simulate icing based on heater and ambient temperature
+    if (!engine.lock()->isFlagActive(Flag::FROZEN_AOA_SENSOR)) {
+        return;
+    }
+
+    std::random_device device;
+    std::mt19937 rng(device());
+
+    // Jitters around in the high angles
+    std::uniform_real_distribution<double> dist(20, 50);
+
+    measuredAOADeg = dist(rng);
 }
 
 double AOASensor::patchNaN(double value) {

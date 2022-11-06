@@ -59,6 +59,8 @@ private:
 
     void simulateSideSlipError();
 
+    void simulateFrozenSensor();
+
     static double patchNaN(double value);
 };
 } // phantom

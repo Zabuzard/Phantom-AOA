@@ -28,6 +28,7 @@ constexpr int32_t WEIGHT_ON_WHEEL_FLAG = 'X';
 constexpr int32_t GEAR_FLAG = 'C';
 constexpr int32_t SLATS_FLAG = 'V';
 constexpr int32_t AGM_45_SELECTED_FLAG = 'B';
+constexpr int32_t FROZEN_AOA_SENSOR_FLAG = 'N';
 
 constexpr int32_t INSTR_PANEL_LIGHT_DECR_KNOB = 'T';
 constexpr int32_t INSTR_PANEL_LIGHT_INCR_KNOB = 'Z';

@@ -59,8 +59,8 @@ void AOAIndexer::updateLamps(double aoaDeg) {
 
 void AOAIndexer::updateLampsAgmCue() {
     std::map<Agm45Cue, indexer::Lamp> cueToLamp{
-            {Agm45Cue::DIVE, indexer::Lamp::LOW_SPEED},
-            {Agm45Cue::LEVEL, indexer::Lamp::ON_SPEED},
+            {Agm45Cue::DIVE,    indexer::Lamp::LOW_SPEED},
+            {Agm45Cue::LEVEL,   indexer::Lamp::ON_SPEED},
             {Agm45Cue::PULL_UP, indexer::Lamp::HIGH_SPEED}
     };
 

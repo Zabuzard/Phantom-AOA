@@ -6,7 +6,8 @@ enum class Flag {
     WEIGHT_ON_WHEEL,
     GEAR_EXTENDED,
     SLATS_IN,
-    AGM_45_SELECTED
+    AGM_45_SELECTED,
+    FROZEN_AOA_SENSOR
 };
 
 #endif //PHANTOM_AOA_FLAG_H

@@ -88,11 +88,12 @@ private:
     };
 
     const std::map<int32_t, Flag> keyToFlag{
-            {controls::NOSE_WHEEL_FLAG,      Flag::NOSE_WHEEL_EXTENDED},
-            {controls::WEIGHT_ON_WHEEL_FLAG, Flag::WEIGHT_ON_WHEEL},
-            {controls::GEAR_FLAG,            Flag::GEAR_EXTENDED},
-            {controls::SLATS_FLAG,           Flag::SLATS_IN},
-            {controls::AGM_45_SELECTED_FLAG, Flag::AGM_45_SELECTED}
+            {controls::NOSE_WHEEL_FLAG,        Flag::NOSE_WHEEL_EXTENDED},
+            {controls::WEIGHT_ON_WHEEL_FLAG,   Flag::WEIGHT_ON_WHEEL},
+            {controls::GEAR_FLAG,              Flag::GEAR_EXTENDED},
+            {controls::SLATS_FLAG,             Flag::SLATS_IN},
+            {controls::AGM_45_SELECTED_FLAG,   Flag::AGM_45_SELECTED},
+            {controls::FROZEN_AOA_SENSOR_FLAG, Flag::FROZEN_AOA_SENSOR}
     };
 
     const std::map<int32_t, Knob> keyToKnobDecrease{

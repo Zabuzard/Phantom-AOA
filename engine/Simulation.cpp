@@ -64,7 +64,7 @@ void Simulation::renderAll() const {
               << "Press the arrow keys to change the aircraft orientation.\n"
               << "Press QWER to toggle buses, ASDFGHJ for circuit breakers.\n"
               << "Rotate knobs: Instr lights (TZ), Emr flood (UI), Indx light (OP), Aural Vol (KL)\n"
-              << "Further: Nose wheel (Y), Weight on Wheel (X), Gear (C), Slats (V), AGM-45 (B)\n\n";
+              << "Further: Nose wheel (Y), Weight on Wheel (X), Gear (C), Slats (V), AGM-45 (B), freeze sensor (N)\n\n";
 
     for (const auto& entity: entities) {
         auto renderResult = entity->render();
