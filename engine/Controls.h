@@ -5,8 +5,8 @@
 #include <windows.h>
 
 namespace controls {
-constexpr int32_t PITCH_UP = VK_UP;
-constexpr int32_t PITCH_DOWN = VK_DOWN;
+constexpr int32_t PITCH_UP = VK_DOWN;
+constexpr int32_t PITCH_DOWN = VK_UP;
 constexpr int32_t RUDDER_LEFT = VK_LEFT;
 constexpr int32_t RUDDER_RIGHT = VK_RIGHT;
 

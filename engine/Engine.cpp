@@ -9,6 +9,8 @@
 #include "Controls.h"
 #include "Flag.h"
 
+#include "../math/Math.h"
+
 void Engine::initialize() {}
 
 std::string Engine::render() const {
@@ -30,12 +32,15 @@ std::string Engine::render() const {
 
     std::map<Flag, std::string> flagToName{
             {Flag::NOSE_WHEEL_EXTENDED, "Nose wheel out"},
-            {Flag::WEIGHT_ON_WHEEL, "Weight on Wheel"}
+            {Flag::WEIGHT_ON_WHEEL,     "Weight on Wheel"}
     };
 
     std::stringstream ss;
 
     ss << "playerFlightPath: " << playerFlightPath.toString() << '\n';
+    ss << "forward: " << playerRollAxis.toString()
+       << ", left: " << playerPitchAxis.toString()
+       << ", up: " << playerYawAxis.toString() << '\n';
 
     ss << "powered buses: [";
     for (const auto& bus: poweredBuses) {
@@ -62,8 +67,16 @@ Vector3 Engine::getPlayerFlightPath() const {
     return playerFlightPath;
 }
 
-Vector3 Engine::getPlayerChordLine() const {
-    return playerChordLine;
+Vector3 Engine::getPlayerRollAxis() const {
+    return playerRollAxis;
+}
+
+Vector3 Engine::getPlayerPitchAxis() const {
+    return playerPitchAxis;
+}
+
+Vector3 Engine::getPlayerYawAxis() const {
+    return playerYawAxis;
 }
 
 bool Engine::isBusPowered(Bus bus) const {
@@ -87,28 +100,29 @@ void Engine::update(double deltaTimeSeconds) {
 }
 
 void Engine::updateAircraftOrientation(double deltaTimeSeconds) {
-    // TODO If theres time, change this to actually change by degrees of the angle
-    // NOTE Technically this does not actually change the pitch and rudder (as in, degrees or similar),
-    //  just the position in the respective axis. But since this is only needed for testing, no need to get fancy here.
-    double changePitchBy = 0;
+    double changePitchByDeg = 0;
     if (isKeyPressed(controls::PITCH_UP)) {
-        changePitchBy = CHANGE_PITCH_PER_SECOND;
+        changePitchByDeg = -CHANGE_PITCH_DEG_PER_SECOND;
     } else if (isKeyPressed(controls::PITCH_DOWN)) {
-        changePitchBy = -CHANGE_PITCH_PER_SECOND;
+        changePitchByDeg = CHANGE_PITCH_DEG_PER_SECOND;
     }
-    changePitchBy *= deltaTimeSeconds;
+    changePitchByDeg *= deltaTimeSeconds;
+    double changePitchByRad = math::degToRad(changePitchByDeg);
 
-    playerFlightPath.z += changePitchBy;
+    playerRollAxis = playerRollAxis.rotatedAroundYAxis(changePitchByRad);
+    playerYawAxis = playerYawAxis.rotatedAroundYAxis(changePitchByRad);
 
-    double changeRudderBy = 0;
+    double changeYawByDeg = 0;
     if (isKeyPressed(controls::RUDDER_RIGHT)) {
-        changeRudderBy = CHANGE_RUDDER_PER_SECOND;
+        changeYawByDeg = CHANGE_YAW_DEG_PER_SECOND;
     } else if (isKeyPressed(controls::RUDDER_LEFT)) {
-        changeRudderBy = -CHANGE_RUDDER_PER_SECOND;
+        changeYawByDeg = -CHANGE_YAW_DEG_PER_SECOND;
     }
-    changeRudderBy *= deltaTimeSeconds;
+    changeYawByDeg *= deltaTimeSeconds;
+    double changeYawByRad = math::degToRad(changeYawByDeg);
 
-    playerFlightPath.y += changeRudderBy;
+    playerRollAxis = playerRollAxis.rotatedAroundZAxis(changeYawByRad);
+    playerPitchAxis = playerPitchAxis.rotatedAroundZAxis(changeYawByRad);
 }
 
 bool Engine::isKeyPressed(int keyCode) {

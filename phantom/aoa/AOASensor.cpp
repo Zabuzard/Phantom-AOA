@@ -28,27 +28,44 @@ std::string AOASensor::render() const {
         ss << "measured: " << *measuredAOADeg << " deg";
     }
 
-    ss << ", physical: " << physicalAOADeg << " deg)";
+    ss << ", physical: " << physicalAOADeg << " deg"
+       << ", [side-slip: " << physicalSideSlipDeg << " deg])";
 
     return ss.str();
 }
 
 void AOASensor::update(double deltaTimeSeconds) {
     updatePhysicalAOA();
+    updatePhysicalSideSlip();
     simulateSensorReading();
 }
 
 void AOASensor::updatePhysicalAOA() {
-    const Vector3 chordLine = engine.lock()->getPlayerChordLine();
     const Vector3 flightPath = engine.lock()->getPlayerFlightPath();
 
-    double angleDeg = math::radToDeg(flightPath.angleRad(chordLine));
+    const Vector3 rollAxis = engine.lock()->getPlayerRollAxis();
+    const Vector3 yawAxis = engine.lock()->getPlayerYawAxis();
 
-    physicalAOADeg = angleDeg;
+    const Vector3 flightPathOnPitchPlane = flightPath.projectedOntoPlane(rollAxis, yawAxis);
+
+    physicalAOADeg = math::radToDeg(
+            flightPathOnPitchPlane.signedAngleRad(rollAxis, engine.lock()->getPlayerPitchAxis()));
+}
+
+void AOASensor::updatePhysicalSideSlip() {
+    const Vector3 flightPath = engine.lock()->getPlayerFlightPath();
+
+    const Vector3 rollAxis = engine.lock()->getPlayerRollAxis();
+    const Vector3 pitchAxis = engine.lock()->getPlayerPitchAxis();
+
+    const Vector3 flightPathOnYawPlane = flightPath.projectedOntoPlane(rollAxis, pitchAxis);
+
+    physicalSideSlipDeg = math::radToDeg(
+            flightPathOnYawPlane.signedAngleRad(rollAxis, engine.lock()->getPlayerYawAxis()));
 }
 
 void AOASensor::simulateSensorReading() {
-    // TODO side slipping error, frozen error ...
+    // TODO frozen error ...
     bool wasTurnedOff = !isTurnedOn;
 
     if (!powerSystem.lock()->hasPrimarySystemPower()) {
@@ -72,9 +89,8 @@ void AOASensor::simulateSensorReading() {
 
     measuredAOADeg = physicalAOADeg;
 
-    if (!engine.lock()->isFlagActive(Flag::NOSE_WHEEL_EXTENDED)) {
-        measuredAOADeg = *measuredAOADeg - 1;
-    }
+    simulateNoseWheelError();
+    simulateSideSlipError();
 }
 
 void AOASensor::startWarmup() {
@@ -88,5 +104,18 @@ void AOASensor::startWarmup() {
     double warmUpDurationSeconds = math::rangeLerp(relevantTemperature, -54, 30, 120, 2);
     warmedUpAt = std::chrono::high_resolution_clock::now() +
                  std::chrono::seconds(static_cast<int32_t>(warmUpDurationSeconds));
+}
+
+void AOASensor::simulateNoseWheelError() {
+    if (!engine.lock()->isFlagActive(Flag::NOSE_WHEEL_EXTENDED)) {
+        measuredAOADeg = *measuredAOADeg - 1;
+    }
+}
+
+void AOASensor::simulateSideSlipError() {
+    double relevantSideSlipDeg = math::clamp(physicalSideSlipDeg, -30, 30);
+    double aoaDegError = math::rangeLerp(relevantSideSlipDeg, -30, 30, 2, -2);
+
+    measuredAOADeg = *measuredAOADeg + aoaDegError;
 }
 } // phantom

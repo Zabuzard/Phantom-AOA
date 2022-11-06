@@ -25,7 +25,26 @@ public:
 
     [[nodiscard]] Vector3 getPlayerFlightPath() const;
 
-    [[nodiscard]] Vector3 getPlayerChordLine() const;
+    /**
+     * The axis around which the players aircraft would roll. Normal vector on the planes x-axis,
+     * i.e. where the nose and chords are pointing to, or if the pilot looks straight ahead.
+     * @return the players aircraft roll axis
+     */
+    [[nodiscard]] Vector3 getPlayerRollAxis() const;
+
+    /**
+     * The axis around which the players aircraft would pitch. Normal vector on the planes y-axis,
+     * i.e. if the pilot would look to the left.
+     * @return the players aircraft pitch axis
+     */
+    [[nodiscard]] Vector3 getPlayerPitchAxis() const;
+
+    /**
+     * The axis around which the players aircraft would yaw. Normal vector on the planes z-axis,
+     * i.e. if the pilot would look up.
+     * @return the players aircraft yaw axis
+     */
+    [[nodiscard]] Vector3 getPlayerYawAxis() const;
 
     [[nodiscard]] bool isBusPowered(Bus bus) const;
 
@@ -36,8 +55,8 @@ public:
     [[nodiscard]] bool isFlagActive(Flag flag) const;
 
 private:
-    static constexpr double CHANGE_PITCH_PER_SECOND = 0.2;
-    static constexpr double CHANGE_RUDDER_PER_SECOND = 0.2;
+    static constexpr double CHANGE_PITCH_DEG_PER_SECOND = 7;
+    static constexpr double CHANGE_YAW_DEG_PER_SECOND = 7;
 
     const std::map<int32_t, Bus> keyToBus{
             {controls::ESSENTIAL_DC_BUS_POWER,  Bus::ESSENTIAL_DC},
@@ -61,8 +80,10 @@ private:
     };
 
     // NOTE Values can also be adjusted here manually to play with the system
-    Vector3 playerFlightPath{1, 0, 0};
-    Vector3 playerChordLine{1, 0, 0};
+    Vector3 playerFlightPath{10, 0, 0};
+    Vector3 playerRollAxis{10, 0, 0};
+    Vector3 playerPitchAxis{0, 10, 0};
+    Vector3 playerYawAxis{0, 0, 10};
     std::unordered_set<Bus> poweredBuses{Bus::RIGHT_MAIN_AC, Bus::ESSENTIAL_DC, Bus::INSTRUMENT_AC};
     std::unordered_set<CircuitBreaker> pulledCircuitBreakers;
     std::chrono::high_resolution_clock::time_point lastToggleInput = std::chrono::high_resolution_clock::now();
