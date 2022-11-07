@@ -6,6 +6,7 @@
 #include <cmath>
 
 struct Vector3 final {
+    // TODO This class should be heavily unit tested to ensure that there are no bugs at the core of the logic
     double x;
     double y;
     double z;

@@ -4,6 +4,7 @@
 #include <numbers>
 
 namespace math {
+// TODO This class should be heavily unit tested to ensure that there are no bugs at the core of the logic
 [[nodiscard]] inline double radToDeg(double radians) {
     return radians * (180.0 / std::numbers::pi);
 }
