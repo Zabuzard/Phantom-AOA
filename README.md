@@ -3,7 +3,7 @@
 This project simulates the **Angle Of Attack** (AOA) system of
 the **Phantom F-4E** fighter jet.
 
-![demo](https://i.imgur.com/2f0AXtm.gif)
+<img alt="demo" src="/demo.gif?raw=true"/>
 
 It comes as an interactive console application with a simple text-based GUI.
 For the best experience, it should be viewed on an ANSI-compatible console.
