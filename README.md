@@ -60,14 +60,14 @@ The aircraft has a few knobs that can be rotated to decrease or increase their v
 Further, there are certain states, provided as simple boolean flags, which can be toggled.
 
 * <kbd>Y</kbd> Nose-Wheel (extend/retract)
-* <kbd>X</kbd> Weight On Wheel (on-ground/in-flight) 
+* <kbd>X</kbd> Weight On Wheel (on-ground/in-flight)
 * <kbd>C</kbd> Gear (extend/retract)
 * <kbd>V</kbd> Slats (in/out)
 * <kbd>B</kbd> AGM-45 mode (select/unselect)
 * <kbd>N</kbd> AOA sensor icing (freeze/not frozen)
 
 For simplicity, the gear flags all act independently of each other.
-For example, applying the gear flag will  not apply the nose-wheel flag as well.
+For example, applying the gear flag will not apply the nose-wheel flag as well.
 
 ## Features
 
@@ -159,7 +159,7 @@ Indicator:
 ![indicator](https://i.imgur.com/YKVA9Ag.png)
 
 Power off, needle stuck:
-![power off](https://i.imgur.com/uwGijkV.png)
+![power off](https://i.imgur.com/YV5B7Ow.png)
 
 Indicator is limited:
 ![limit](https://i.imgur.com/t5Vp0K4.png)
@@ -217,7 +217,8 @@ The flow starts with `main.cpp`, which simply starts `Simulation`.
 
 ### Simulation
 
-`Simulation` consists of a simple _game loop_ that controls logical updates and rendering using `TPS` and `FPS` respectively.
+`Simulation` consists of a simple _game loop_ that controls logical updates and rendering using `TPS` and `FPS`
+respectively.
 It maintains a list of `Entity`, for which it will call `update(double deltaTime)` during a logical update (tick)
 and `render()` when rendering the next frame.
 
@@ -272,7 +273,8 @@ All relevant logic for math and physics can be found in `Math` and `Vector3`.
 #### Pressure
 
 In reality, the sensor measures the AOA with a slotted probe. The probe has two holes that allow air to stream in.
-Difference in air pressure between the areas behind those two holes, created by a change of AOA, physically move a surface within the probe.
+Difference in air pressure between the areas behind those two holes, created by a change of AOA, physically move a
+surface within the probe.
 This movement then induces changes in electrical resistance, which is translated into the sensors signal.
 
 Simulating it that way requires that the engine is capable of providing precise atmospheric pressure readings
@@ -300,7 +302,9 @@ Once the sensor is simulated, it can simply forward its readings to all other co
 #### Components
 
 Code-wise, it is likely meaningful to employ OOP here and represent each component in the system as its own
-individual class, which possibly has dependencies on other classes. For example, the AOA system consists of components, like:
+individual class, which possibly has dependencies on other classes. For example, the AOA system consists of components,
+like:
+
 * sensor
 * heaters
 * circuit breakers
@@ -310,10 +314,12 @@ individual class, which possibly has dependencies on other classes. For example,
 * aural tone system
 
 That way, each component can simulate its own quirks individually. It also allows us to create multiple, individual
-instances per component. For example, the aircraft has 2 indicators and 4 indexers. Each of them could then exist individually,
+instances per component. For example, the aircraft has 2 indicators and 4 indexers. Each of them could then exist
+individually,
 allowing individual interaction.
 
-Some things likely do not need to be represented as individual components in the simulation, such as the heaters. The heaters
+Some things likely do not need to be represented as individual components in the simulation, such as the heaters. The
+heaters
 can not be interacted with individually and only influence the sensors capability to measure accurately.
 It may or may not be feasible to just represent this effect within the sensor itself, depending on outside conditions,
 such as the temperature. This could change if the environment allows for more detailed simulation,
@@ -325,14 +331,16 @@ such as combat-damage of the heater unit itself.
 
 #### Systems
 
-The AOA system is a core component of the aircraft system. Its data is not only relevant for its own components, such as:
+The AOA system is a core component of the aircraft system. Its data is not only relevant for its own components, such
+as:
 
 * indicator
 * indexer
 * stall warning vibrator
 * aural tone system
 
-But is also fed directly into the Central Aircraft Data Computer (CADC), from which it is forwarded to all other systems that need it.
+But is also fed directly into the Central Aircraft Data Computer (CADC), from which it is forwarded to all other systems
+that need it.
 
 Some systems that rely on it are:
 
@@ -342,15 +350,18 @@ Some systems that rely on it are:
 * weapon system (lead computation, CCIP, AGM-45, ...)
 * tests (BITs and test switches might spin the needles around and light all lamps)
 
-Further, there are also systems that should be given access to the true physical AOA, without any simulation effects applied by the sensor.
-The simulation of the flight model or engine performance needs access to the real AOA in order to simulate changes during extreme conditions.
-As an example, the aircraft starts rolling to the side under very high AOAs, or the engines may flame-out. 
+Further, there are also systems that should be given access to the true physical AOA, without any simulation effects
+applied by the sensor.
+The simulation of the flight model or engine performance needs access to the real AOA in order to simulate changes
+during extreme conditions.
+As an example, the aircraft starts rolling to the side under very high AOAs, or the engines may flame-out.
 
 #### Exposed data
 
 The core data that has to be exposed to other systems is essentially the AOA reading of the sensor itself.
 
-Further, some systems, such as the AGM-45, requires control of the AOA indexer. It can override the lamp states to indicate cues.
+Further, some systems, such as the AGM-45, requires control of the AOA indexer. It can override the lamp states to
+indicate cues.
 
 Apart from that, the AOA system mostly just has to expose its data for display/rendering in the cockpit.
 For example, the AOA indicator has to move the needle to the indicated position.
@@ -364,6 +375,7 @@ For example the light intensity knobs for the AOA indexers.
 > What kind of basic failures in the AOA system would you simulate?
 
 The most obvious _failures_ are related to the system not having power. Some reasons could be:
+
 * engines out, battery out, no external power
 * circuit breaker pulled
 * generator out
@@ -373,6 +385,7 @@ Further, the sensor can become iced if flying in cold conditions and the heaters
 
 But there are also failures that are just unrealistic to happen within the context of the simulation.
 It is not necessary to simulate those. For example:
+
 * mean operating time between failures (1500 hours)
 * minimum operating life (6000 hours)
 * error induced by voltage spikes

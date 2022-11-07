@@ -20,13 +20,13 @@ std::string AOASensor::render() const {
     std::stringstream ss;
     ss << "sensor (";
 
-    if (warmedUpAt) {
+    if (!isTurnedOn) {
+        ss << "no power";
+    } else if (warmedUpAt) {
         auto duration = *warmedUpAt - std::chrono::high_resolution_clock::now();
         auto secondsUntilWarmedUp = std::chrono::duration_cast<std::chrono::seconds>(duration);
 
         ss << "warming up... " << secondsUntilWarmedUp.count() << "s";
-    } else if (!measuredAOADeg) {
-        ss << "no power";
     } else {
         ss << "measured: " << *measuredAOADeg << " deg";
     }
