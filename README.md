@@ -291,7 +291,7 @@ together with its flight path vector. This information can typically be provided
 
 The AOA can then be computed by basic means of 3D geometry:
 
-![geometry](https://i.imgur.com/kcjbwRu.png)
+![geometry](https://i.imgur.com/skUvnqd.png)
 
 This approach will provide an accurate AOA reading in all situations, attitudes and motions. While this sounds great,
 it is also a disadvantage at the same time. It implies that more effects have to be simulated manually,
